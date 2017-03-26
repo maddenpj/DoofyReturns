@@ -11,29 +11,14 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   float t = 0.0f;
   SpriteBatch batch;
   Texture img;
-  TextureRegion imgr;
-  Animation<TextureRegion> walkAnimation;
+  AnimatedSprite sprite;
+  // Animation<TextureRegion> walkAnimation;
   
   @Override
   public void create () {
     batch = new SpriteBatch();
     img = new Texture("sprite1.png");
-    // imgr = new TextureRegion(img, 0, 0, img.getWidth(), img.getHeight() / 4);
-    walkAnimation = fromSpritesheet(img, 2, 2, 0.14f);
-  }
-
-  private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float dt) {
-    TextureRegion[][] tmp = TextureRegion.split(img, 
-        img.getWidth() / columns,
-        img.getHeight() / rows);
-    TextureRegion[] walkFrames = new TextureRegion[columns * rows];
-    int index = 0;
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
-        walkFrames[index++] = tmp[i][j];
-      }
-    }
-    return new Animation<TextureRegion>(dt, walkFrames);
+    sprite = new AnimatedSprite(img, 2, 2, 0.14f);
   }
 
   @Override
@@ -42,8 +27,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     t += Gdx.graphics.getDeltaTime();
     batch.begin();
-    batch.draw(walkAnimation.getKeyFrame(t, true), 100, 100);
-    // batch.draw(imgr.getTexture(), 100, 100);
+    sprite.draw(batch, t);
     batch.end();
   }
   
