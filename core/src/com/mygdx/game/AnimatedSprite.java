@@ -18,16 +18,15 @@ public class AnimatedSprite {
     this.fps = sFps;
     this.sheetCols = sCols;
     this.sheetRows = sRows;
-
-    load();
-  }
-
-  public void load() {
     animation = fromSpritesheet(sheet, sheetCols, sheetRows, fps);
+    sprite = new Sprite(animation.getKeyFrame(0));
+    sprite.setPosition(100, 200);
   }
 
   public void draw(SpriteBatch s, float dt) {
-    s.draw(animation.getKeyFrame(dt, true), 100, 100);
+    sprite.setRotation(sprite.getRotation() + 0.1f);
+    sprite.setRegion(animation.getKeyFrame(dt, true));
+    sprite.draw(s);
   }
 
   private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float dt) {
