@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 
 public class DoofyReturnsGame extends ApplicationAdapter {
-  int FRAME_COLS = 6, FRAME_ROWS = 5;
   float t = 0.0f;
   SpriteBatch batch;
   Texture img;
   AnimatedSprite sprite;
-  // Animation<TextureRegion> walkAnimation;
   
   @Override
   public void create () {
@@ -23,9 +21,12 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
   @Override
   public void render () {
+    // Off white bc I was trying to match the bg color of anime spritesheet
+    // you know bc converting the png to transparent bg was too hard :(
     Gdx.gl.glClearColor(0.86f, 0.88f,0.86f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     t += Gdx.graphics.getDeltaTime();
+
     batch.begin();
     sprite.draw(batch, t);
     batch.end();

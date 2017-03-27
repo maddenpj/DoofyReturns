@@ -19,17 +19,29 @@ public class AnimatedSprite {
     this.sheetCols = sCols;
     this.sheetRows = sRows;
     animation = fromSpritesheet(sheet, sheetCols, sheetRows, fps);
+
+    // Sprite and Animation both use the same Texture
+    // This way spritesheet.png gets loaded into gpu once and remains there
+    // TextureRegions are just a rectangle (x,y,w,h) and a pointer to a texture
+    // So Sprite/Animation only have to pass around TextureRegions
     sprite = new Sprite(animation.getKeyFrame(0));
+
+    // This is player/enemy/etc. position, makes it super easy to wire input to a sprite
     sprite.setPosition(100, 200);
   }
 
-  public void draw(SpriteBatch s, float dt) {
+  public void draw(SpriteBatch s, float totalTime) {
+    // Rotation only because wanted to test something Sprite specific
+    // not just something that a TextureRegion can do also
     sprite.setRotation(sprite.getRotation() + 0.1f);
-    sprite.setRegion(animation.getKeyFrame(dt, true));
+
+    // Animation here just tells the sprite to move it's Region to the latest frame
+    sprite.setRegion(animation.getKeyFrame(totalTime, true));
     sprite.draw(s);
   }
 
-  private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float dt) {
+  // From stackoverflow
+  private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float fps) {
     TextureRegion[][] tmp = TextureRegion.split(img, 
         img.getWidth() / columns,
         img.getHeight() / rows);
@@ -40,7 +52,7 @@ public class AnimatedSprite {
         walkFrames[index++] = tmp[i][j];
       }
     }
-    return new Animation<TextureRegion>(dt, walkFrames);
+    return new Animation<TextureRegion>(fps, walkFrames);
   }
 
 
