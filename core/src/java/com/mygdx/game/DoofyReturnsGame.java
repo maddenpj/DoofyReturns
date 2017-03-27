@@ -16,6 +16,9 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   public void create () {
     batch = new SpriteBatch();
     img = new Texture("sprite1.png");
+    // Broken
+    // Doofy foo = new com.mygdx.game.Doofy();
+    // Doofy.foo(img);
     sprite = new AnimatedSprite(img, 2, 2, 0.14f);
   }
 
