@@ -5,21 +5,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.mappings.Xbox;
 
 public class DoofyReturnsGame extends ApplicationAdapter {
+  final String TAG = "DoofyReturnsGame";
   float t = 0.0f;
   SpriteBatch batch;
   Texture img;
   AnimatedSprite sprite;
+  Controller playerOne;
   
   @Override
   public void create () {
     batch = new SpriteBatch();
     img = new Texture("sprite1.png");
-    // Broken
-    // Doofy foo = new com.mygdx.game.Doofy();
-    // Doofy.foo(img);
     sprite = new AnimatedSprite(img, 2, 2, 0.14f);
+
+    Gdx.app.log(TAG, "Controllers:");
+    for (Controller controller : Controllers.getControllers()) {
+      Gdx.app.log(TAG, controller.getName());
+      if (Xbox.isXboxController(controller)) {
+        playerOne = controller;
+        Gdx.app.log(TAG, "Ready Player One.");
+      }
+    }
   }
 
   @Override
