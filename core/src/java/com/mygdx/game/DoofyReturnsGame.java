@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.mappings.Xbox;
+import com.badlogic.gdx.Input;
 
 public class DoofyReturnsGame extends ApplicationAdapter {
   final String TAG = "DoofyReturnsGame";
@@ -33,8 +34,18 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     }
   }
 
+  public void update (float dt) {
+    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+      sprite.incrementPositionX(1.0f);
+    }
+    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+      sprite.incrementPositionX(-1.0f);
+    }
+  }
+
   @Override
   public void render () {
+    update(Gdx.graphics.getDeltaTime());
     // Off white bc I was trying to match the bg color of anime spritesheet
     // you know bc converting the png to transparent bg was too hard :(
     Gdx.gl.glClearColor(0.86f, 0.88f,0.86f, 1);

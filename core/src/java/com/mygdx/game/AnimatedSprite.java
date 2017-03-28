@@ -33,11 +33,15 @@ public class AnimatedSprite {
   public void draw(SpriteBatch s, float totalTime) {
     // Rotation only because wanted to test something Sprite specific
     // not just something that a TextureRegion can do also
-    sprite.setRotation(sprite.getRotation() + 0.1f);
-
+    // sprite.setRotation(sprite.getRotation() + 0.1f);
+    
     // Animation here just tells the sprite to move it's Region to the latest frame
     sprite.setRegion(animation.getKeyFrame(totalTime, true));
     sprite.draw(s);
+  }
+
+  public void incrementPositionX(float dx) {
+    sprite.setX(sprite.getX() + dx);
   }
 
   // From stackoverflow
