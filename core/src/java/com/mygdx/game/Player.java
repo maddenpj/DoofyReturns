@@ -17,16 +17,22 @@ import com.badlogic.gdx.Input;
 
 public class Player {
 
-  AnimatedSprite sprite;
-  float fps  = 0.14f;
   float posX = 100.0f;
   float posY = 100.0f;
   float velX = 0.0f;
-
   float walkSpeed = 1.0f;
 
+  // We need several of these so we need a state machine to manage them
+  // Only one should be active at a time, draw() renders only the active one
+  // update manages which AnimatedSprite is active. ie:
+  //     walk input = walk
+  //     No input = standing
+  //     dying, jumping, etc
+  float fps  = 0.14f;
+  AnimatedSprite walk;
+
   public Player(TextureAtlas atlas) {
-    sprite = new AnimatedSprite(atlas, "walk", fps);
+    walk = new AnimatedSprite(atlas, "walk", fps);
   }
 
   public void update(float elapsedTime) {
@@ -34,22 +40,22 @@ public class Player {
 
     if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
       velX = walkSpeed;
-      sprite.playAnimation(elapsedTime);
+      walk.playAnimation(elapsedTime);
     }
     if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
       velX = -walkSpeed;
-      sprite.playAnimation(elapsedTime);
+      walk.playAnimation(elapsedTime);
     }
 
     if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
     }
 
     posX += velX;
-    sprite.setPosition(posX, posY);
+    walk.setPosition(posX, posY);
   }
 
   public void draw (SpriteBatch s) {
-    sprite.draw(s);
+    walk.draw(s);
   }
 
 
