@@ -30,6 +30,11 @@ public class AnimatedSprite {
     sprite.setPosition(100, 200);
   }
 
+  public AnimatedSprite (Sprite sprite, float sFps) {
+    this.sprite = sprite;
+  }
+
+
   public void draw(SpriteBatch s, float totalTime) {
     // Rotation only because wanted to test something Sprite specific
     // not just something that a TextureRegion can do also

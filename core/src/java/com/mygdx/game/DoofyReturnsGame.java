@@ -17,10 +17,15 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   Texture img;
   AnimatedSprite sprite;
   Controller playerOne;
-  
+  Sprite s;
+
   @Override
   public void create () {
     batch = new SpriteBatch();
+
+    TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/warrior.atlas"));
+    s = atlas.createSprite("warrior");
+
     img = new Texture("sprite1.png");
     sprite = new AnimatedSprite(img, 2, 2, 0.14f);
 
@@ -53,10 +58,11 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     t += Gdx.graphics.getDeltaTime();
 
     batch.begin();
-    sprite.draw(batch, t);
+    s.draw(batch);
+    // sprite.draw(batch, t);
     batch.end();
   }
-  
+
   @Override
   public void dispose () {
     batch.dispose();
