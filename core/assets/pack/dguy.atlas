@@ -1,0 +1,55 @@
+
+dguy.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+death
+  rotate: false
+  xy: 92, 2
+  size: 80, 109
+  orig: 80, 109
+  offset: 0, 0
+  index: 2
+death
+  rotate: false
+  xy: 373, 2
+  size: 54, 109
+  orig: 54, 109
+  offset: 0, 0
+  index: 1
+punch
+  rotate: false
+  xy: 2, 2
+  size: 88, 109
+  orig: 88, 109
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 174, 3
+  size: 71, 108
+  orig: 71, 108
+  offset: 0, 0
+  index: 3
+walk
+  rotate: false
+  xy: 247, 2
+  size: 65, 109
+  orig: 65, 109
+  offset: 0, 0
+  index: 2
+walk
+  rotate: false
+  xy: 314, 4
+  size: 57, 107
+  orig: 57, 107
+  offset: 0, 0
+  index: 1
+walk
+  rotate: false
+  xy: 314, 4
+  size: 57, 107
+  orig: 57, 107
+  offset: 0, 0
+  index: 4

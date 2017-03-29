@@ -30,23 +30,25 @@ public class AnimatedSprite {
     sprite.setPosition(100, 200);
   }
 
-  public AnimatedSprite (Sprite sprite, float sFps) {
-    this.sprite = sprite;
+  public AnimatedSprite (TextureAtlas atlas, String name, float fps) {
+    animation = new Animation<TextureRegion>(fps, atlas.findRegions(name), Animation.PlayMode.LOOP);
+    sprite = new Sprite(animation.getKeyFrame(0));
+    // sprite = atlas.createSprite(name);
   }
 
 
-  public void draw(SpriteBatch s, float totalTime) {
+  public void draw(SpriteBatch s, float elapsedTime) {
     // Rotation only because wanted to test something Sprite specific
     // not just something that a TextureRegion can do also
     // sprite.setRotation(sprite.getRotation() + 0.1f);
     
     // Animation here just tells the sprite to move it's Region to the latest frame
-    sprite.setRegion(animation.getKeyFrame(totalTime, true));
     sprite.draw(s);
   }
 
-  public void incrementPositionX(float dx) {
+  public void moveKeyPressed(float elapsedTime, float dx) {
     sprite.setX(sprite.getX() + dx);
+    sprite.setRegion(animation.getKeyFrame(elapsedTime));
   }
 
   // From stackoverflow

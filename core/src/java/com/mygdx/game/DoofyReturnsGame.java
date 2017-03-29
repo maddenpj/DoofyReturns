@@ -12,9 +12,9 @@ import com.badlogic.gdx.Input;
 
 public class DoofyReturnsGame extends ApplicationAdapter {
   final String TAG = "DoofyReturnsGame";
-  float t = 0.0f;
+  float elapsedTime = 0.0f;
   SpriteBatch batch;
-  Texture img;
+  // Texture img;
   AnimatedSprite sprite;
   Controller playerOne;
   Sprite s;
@@ -23,11 +23,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   public void create () {
     batch = new SpriteBatch();
 
-    TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/warrior.atlas"));
-    s = atlas.createSprite("warrior");
+    TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/dguy.atlas"));
+    sprite = new AnimatedSprite(atlas, "walk", 0.14f);
 
-    img = new Texture("sprite1.png");
-    sprite = new AnimatedSprite(img, 2, 2, 0.14f);
+    // for (TextureAtlas.AtlasRegion a : atlas.findRegions("jkjk"))
+
+    // img = new Texture("sprite1.png");
+    // sprite = new AnimatedSprite(img, 2, 2, 0.14f);
 
     Gdx.app.log(TAG, "Controllers:");
     for (Controller controller : Controllers.getControllers()) {
@@ -39,33 +41,33 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     }
   }
 
-  public void update (float dt) {
+  public void update () {
+    elapsedTime += Gdx.graphics.getDeltaTime();
+
     if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-      sprite.incrementPositionX(1.0f);
+      sprite.moveKeyPressed(elapsedTime, 1.0f);
     }
     if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-      sprite.incrementPositionX(-1.0f);
+      sprite.moveKeyPressed(elapsedTime, -1.0f);
     }
   }
 
   @Override
   public void render () {
-    update(Gdx.graphics.getDeltaTime());
+    update();
     // Off white bc I was trying to match the bg color of anime spritesheet
     // you know bc converting the png to transparent bg was too hard :(
     Gdx.gl.glClearColor(0.86f, 0.88f,0.86f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    t += Gdx.graphics.getDeltaTime();
 
     batch.begin();
-    s.draw(batch);
-    // sprite.draw(batch, t);
+    sprite.draw(batch, elapsedTime);
     batch.end();
   }
 
   @Override
   public void dispose () {
     batch.dispose();
-    img.dispose();
+    // img.dispose();
   }
 }
