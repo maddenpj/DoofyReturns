@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -36,19 +35,18 @@ public class AnimatedSprite {
     // sprite = atlas.createSprite(name);
   }
 
-
-  public void draw(SpriteBatch s, float elapsedTime) {
-    // Rotation only because wanted to test something Sprite specific
-    // not just something that a TextureRegion can do also
-    // sprite.setRotation(sprite.getRotation() + 0.1f);
-    
+  // Gotta be a way to play animations without using total elapsed time. like fucking just dt. dt all you need. I need some deepthroat
+  public void playAnimation(float elapsedTime) {
     // Animation here just tells the sprite to move it's Region to the latest frame
+    sprite.setRegion(animation.getKeyFrame(elapsedTime));
+  }
+
+  public void draw(SpriteBatch s) {
     sprite.draw(s);
   }
 
-  public void moveKeyPressed(float elapsedTime, float dx) {
-    sprite.setX(sprite.getX() + dx);
-    sprite.setRegion(animation.getKeyFrame(elapsedTime));
+  public void setPosition(float x, float y) {
+    sprite.setPosition(x,y);
   }
 
   // From stackoverflow

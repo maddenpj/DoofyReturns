@@ -4,28 +4,28 @@ size: 512,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-running
+walk
   rotate: false
   xy: 2, 2
   size: 100, 112
   orig: 100, 112
   offset: 0, 0
   index: 1
-running
+walk
   rotate: false
   xy: 104, 2
   size: 100, 112
   orig: 100, 112
   offset: 0, 0
   index: 2
-running
+walk
   rotate: false
   xy: 206, 2
   size: 100, 112
   orig: 100, 112
   offset: 0, 0
   index: 3
-running
+walk
   rotate: false
   xy: 308, 2
   size: 100, 112

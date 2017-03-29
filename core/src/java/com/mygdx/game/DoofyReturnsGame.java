@@ -16,6 +16,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   SpriteBatch batch;
   // Texture img;
   AnimatedSprite sprite;
+  Player player;
   Controller playerOne;
   Sprite s;
 
@@ -24,12 +25,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     batch = new SpriteBatch();
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/dguy.atlas"));
-    sprite = new AnimatedSprite(atlas, "walk", 0.14f);
-
-    // for (TextureAtlas.AtlasRegion a : atlas.findRegions("jkjk"))
-
-    // img = new Texture("sprite1.png");
-    // sprite = new AnimatedSprite(img, 2, 2, 0.14f);
+    player = new Player(atlas);
 
     Gdx.app.log(TAG, "Controllers:");
     for (Controller controller : Controllers.getControllers()) {
@@ -43,13 +39,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
   public void update () {
     elapsedTime += Gdx.graphics.getDeltaTime();
-
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-      sprite.moveKeyPressed(elapsedTime, 1.0f);
-    }
-    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-      sprite.moveKeyPressed(elapsedTime, -1.0f);
-    }
+    player.update(elapsedTime);
   }
 
   @Override
@@ -61,7 +51,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     batch.begin();
-    sprite.draw(batch, elapsedTime);
+    player.draw(batch);
     batch.end();
   }
 
