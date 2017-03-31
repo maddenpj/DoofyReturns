@@ -63,7 +63,5 @@ public class AnimatedSprite {
     }
     return new Animation<TextureRegion>(fps, walkFrames);
   }
-
-
 }
 

@@ -70,4 +70,3 @@ public class Player {
       posX += speed;
   }
 }
-

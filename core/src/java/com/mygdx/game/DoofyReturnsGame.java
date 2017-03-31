@@ -23,18 +23,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   @Override
   public void create () {
     batch = new SpriteBatch();
-
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/dguy.atlas"));
     player = new Player(atlas);
-
-    Gdx.app.log(TAG, "Controllers:");
-    for (Controller controller : Controllers.getControllers()) {
-      Gdx.app.log(TAG, controller.getName());
-      if (Xbox.isXboxController(controller)) {
-        playerOne = controller;
-        Gdx.app.log(TAG, "Ready Player One.");
-      }
-    }
   }
 
   public void update () {
@@ -59,5 +49,16 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   public void dispose () {
     batch.dispose();
     // img.dispose();
+  }
+
+  private void isPlayerOneReady() {
+    Gdx.app.log(TAG, "Controllers:");
+    for (Controller controller : Controllers.getControllers()) {
+      Gdx.app.log(TAG, controller.getName());
+      if (Xbox.isXboxController(controller)) {
+        playerOne = controller;
+        Gdx.app.log(TAG, "Ready Player One.");
+      }
+    }
   }
 }
