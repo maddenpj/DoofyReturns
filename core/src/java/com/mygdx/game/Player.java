@@ -1,12 +1,14 @@
 package com.mygdx.game;
 
+import java.util.Map;
+import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.Input;
 
 // Realized after making this file, it'll probably end up as AnimatedEntity or similar
 // just bc the right abstraction tree is like:
-//   AnimatedEntity 
+//   AnimatedEntity
 //     - Contains 1..n AnimatedSprite for each animation it supports (walk, dying, jumping, etc..)
 //
 //   Player
@@ -31,33 +33,50 @@ public class Player {
   float fps  = 0.14f;
   AnimatedSprite walk;
 
+  Map<String, AnimatedSprite> animations;
+  String activeAnimation;
+
+
   public Player(TextureAtlas atlas) {
     walk = new AnimatedSprite(atlas, "walk", fps);
+
+    animations = new HashMap<String, AnimatedSprite>();
+    animations.put("walk", walk);
+    animations.put("death", new AnimatedSprite(atlas, "death", 1.0f, Animation.PlayMode.NORMAL));
+
+    activeAnimation = "walk";
+
+    animations.forEach((k,v) -> Gdx.app.log("Player", k + " -> " + v.toString()));
   }
 
   public void update(float elapsedTime) {
     velX = 0.0f;
 
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-      velX = walkSpeed;
-      walk.playAnimation(elapsedTime);
-    }
-    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-      velX = -walkSpeed;
-      walk.playAnimation(elapsedTime);
+    if (activeAnimation == "walk") {
+      if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        velX = walkSpeed;
+        animations.get("walk").playAnimation(elapsedTime);
+      }
+      if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        velX = -walkSpeed;
+        animations.get("walk").playAnimation(elapsedTime);
+      }
     }
 
     if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+      activeAnimation = "death";
+      animations.get("death").playAnimation(elapsedTime);
     }
 
     posX += velX;
-    walk.setPosition(posX, posY);
+    animations.forEach((k,v) -> v.setPosition(posX, posY));
+    
   }
 
   public void draw (SpriteBatch s) {
-    walk.draw(s);
+    // walk.draw(s);
+    animations.get(activeAnimation).draw(s);
   }
-
 
   // Fuck it, implemented MVP of this
   // TODO: change to 2d vector

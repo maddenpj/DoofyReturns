@@ -12,28 +12,33 @@ public class AnimatedSprite {
   Animation<TextureRegion> animation;
   float fps;
 
-  public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps) {
-    this.sheet = sheet;
-    this.fps = sFps;
-    this.sheetCols = sCols;
-    this.sheetRows = sRows;
-    animation = fromSpritesheet(sheet, sheetCols, sheetRows, fps);
+  // public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps) {
+    // this.sheet = sheet;
+    // this.fps = sFps;
+    // this.sheetCols = sCols;
+    // this.sheetRows = sRows;
+    // animation = fromSpritesheet(sheet, sheetCols, sheetRows, fps);
 
-    // Sprite and Animation both use the same Texture
-    // This way spritesheet.png gets loaded into gpu once and remains there
-    // TextureRegions are just a rectangle (x,y,w,h) and a pointer to a texture
-    // So Sprite/Animation only have to pass around TextureRegions
-    sprite = new Sprite(animation.getKeyFrame(0));
+    // // Sprite and Animation both use the same Texture
+    // // This way spritesheet.png gets loaded into gpu once and remains there
+    // // TextureRegions are just a rectangle (x,y,w,h) and a pointer to a texture
+    // // So Sprite/Animation only have to pass around TextureRegions
+    // sprite = new Sprite(animation.getKeyFrame(0));
 
-    // This is player/enemy/etc. position, makes it super easy to wire input to a sprite
-    sprite.setPosition(100, 200);
-  }
+    // // This is player/enemy/etc. position, makes it super easy to wire input to a sprite
+    // sprite.setPosition(100, 200);
+  // }
 
-  public AnimatedSprite (TextureAtlas atlas, String name, float fps) {
-    animation = new Animation<TextureRegion>(fps, atlas.findRegions(name), Animation.PlayMode.LOOP);
+  public AnimatedSprite (TextureAtlas atlas, String name, float fps, Animation.PlayMode mode) {
+    animation = new Animation<TextureRegion>(fps, atlas.findRegions(name), mode);
     sprite = new Sprite(animation.getKeyFrame(0));
     // sprite = atlas.createSprite(name);
   }
+
+  public AnimatedSprite (TextureAtlas atlas, String name, float fps) {
+    this(atlas, name, fps, Animation.PlayMode.LOOP);
+  }
+  
 
   // Gotta be a way to play animations without using total elapsed time. like fucking just dt. dt all you need. I need some deepthroat
   public void playAnimation(float elapsedTime) {

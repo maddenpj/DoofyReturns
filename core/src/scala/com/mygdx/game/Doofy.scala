@@ -12,7 +12,7 @@ class Doofy {
 
   def blah() {
     val img = new Texture("sprite1.png")
-    val x = new AnimatedSprite(img, 2,2,0.14f)
+    // val x = new AnimatedSprite(img, 2,2,0.14f)
     Gdx.app.log("ScalaDoofiez", s"done")
   }
 }
