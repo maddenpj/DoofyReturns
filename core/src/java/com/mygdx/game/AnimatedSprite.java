@@ -11,6 +11,8 @@ public class AnimatedSprite {
   int sheetCols, sheetRows;
   Animation<TextureRegion> animation;
   float fps;
+  float elapsedTime;
+  boolean animationStarted = false;
 
   // public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps) {
     // this.sheet = sheet;
@@ -31,8 +33,8 @@ public class AnimatedSprite {
 
   public AnimatedSprite (TextureAtlas atlas, String name, float fps, Animation.PlayMode mode) {
     animation = new Animation<TextureRegion>(fps, atlas.findRegions(name), mode);
-    sprite = new Sprite(animation.getKeyFrame(0));
-    // sprite = atlas.createSprite(name);
+    // sprite = new Sprite(animation.getKeyFrame(0));
+    sprite = atlas.createSprite(name);
   }
 
   public AnimatedSprite (TextureAtlas atlas, String name, float fps) {
@@ -41,12 +43,17 @@ public class AnimatedSprite {
   
 
   // Gotta be a way to play animations without using total elapsed time. like fucking just dt. dt all you need. I need some deepthroat
-  public void playAnimation(float elapsedTime) {
+  public void playAnimation(float deltaTime) {
     // Animation here just tells the sprite to move it's Region to the latest frame
-    sprite.setRegion(animation.getKeyFrame(elapsedTime));
+    if(!animationStarted) {
+      animationStarted = true;
+      elapsedTime = 0.0f;
+    }
+    elapsedTime += deltaTime;
   }
 
   public void draw(SpriteBatch s) {
+    sprite.setRegion(animation.getKeyFrame(elapsedTime));
     sprite.draw(s);
   }
 

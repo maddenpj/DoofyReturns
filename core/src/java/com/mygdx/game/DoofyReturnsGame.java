@@ -12,7 +12,6 @@ import com.badlogic.gdx.Input;
 
 public class DoofyReturnsGame extends ApplicationAdapter {
   final String TAG = "DoofyReturnsGame";
-  float elapsedTime = 0.0f;
   SpriteBatch batch;
   // Texture img;
   AnimatedSprite sprite;
@@ -28,8 +27,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   }
 
   public void update () {
-    elapsedTime += Gdx.graphics.getDeltaTime();
-    player.update(elapsedTime);
+    player.update(Gdx.graphics.getDeltaTime());
   }
 
   @Override
