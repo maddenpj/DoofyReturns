@@ -42,7 +42,7 @@ public class Player {
 
     activeAnimation = "walk";
 
-    animations.forEach((k,v) -> Gdx.app.log("Player", k + " -> " + v.toString()));
+    // animations.forEach((k,v) -> Gdx.app.log("Player", k + " -> " + v.toString()));
   }
 
   public void update(float dt) {

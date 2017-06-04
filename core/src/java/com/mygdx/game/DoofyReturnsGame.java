@@ -24,10 +24,23 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     batch = new SpriteBatch();
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/dguy.atlas"));
     player = new Player(atlas);
+    Texture alucardSheet = new Texture(Gdx.files.internal("purpucard_walk.png")); //31
+    sprite = new AnimatedSprite(alucardSheet, 1, 31, 0.08f);
+    sprite.setPosition(100.0f, 100.0f);
+
   }
 
   public void update () {
-    player.update(Gdx.graphics.getDeltaTime());
+    // player.update(Gdx.graphics.getDeltaTime());
+    float dt = Gdx.graphics.getDeltaTime();
+
+    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+      sprite.playAnimation(dt);
+      sprite.setPosition(sprite.getX() + 1.0f, sprite.getY());
+    }
+    // if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+      // sprite.playAnimation(dt);
+    // }
   }
 
   @Override
@@ -39,7 +52,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     batch.begin();
-    player.draw(batch);
+    // player.draw(batch);
+    sprite.draw(batch);
     batch.end();
   }
 

@@ -14,22 +14,27 @@ public class AnimatedSprite {
   float elapsedTime;
   boolean animationStarted = false;
 
-  // public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps) {
-    // this.sheet = sheet;
-    // this.fps = sFps;
-    // this.sheetCols = sCols;
-    // this.sheetRows = sRows;
-    // animation = fromSpritesheet(sheet, sheetCols, sheetRows, fps);
+  public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps, Animation.PlayMode mode) {
+    this.sheet = sheet;
+    this.fps = sFps;
+    this.sheetCols = sCols;
+    this.sheetRows = sRows;
+    animation = fromSpritesheet(sheet, sheetCols, sheetRows, fps);
+    animation.setPlayMode(mode);
 
-    // // Sprite and Animation both use the same Texture
-    // // This way spritesheet.png gets loaded into gpu once and remains there
-    // // TextureRegions are just a rectangle (x,y,w,h) and a pointer to a texture
-    // // So Sprite/Animation only have to pass around TextureRegions
-    // sprite = new Sprite(animation.getKeyFrame(0));
+    // Sprite and Animation both use the same Texture
+    // This way spritesheet.png gets loaded into gpu once and remains there
+    // TextureRegions are just a rectangle (x,y,w,h) and a pointer to a texture
+    // So Sprite/Animation only have to pass around TextureRegions
+    sprite = new Sprite(animation.getKeyFrame(0));
 
-    // // This is player/enemy/etc. position, makes it super easy to wire input to a sprite
-    // sprite.setPosition(100, 200);
-  // }
+    // This is player/enemy/etc. position, makes it super easy to wire input to a sprite
+    sprite.setPosition(0, 0);
+  }
+
+  public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps) {
+    this(sheet, sRows, sCols, sFps, Animation.PlayMode.LOOP);
+  }
 
   public AnimatedSprite (TextureAtlas atlas, String name, float fps, Animation.PlayMode mode) {
     animation = new Animation<TextureRegion>(fps, atlas.findRegions(name), mode);
@@ -60,6 +65,9 @@ public class AnimatedSprite {
   public void setPosition(float x, float y) {
     sprite.setPosition(x,y);
   }
+
+  public float getX() { return sprite.getX(); }
+  public float getY() { return sprite.getY(); }
 
   // From stackoverflow
   private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float fps) {
