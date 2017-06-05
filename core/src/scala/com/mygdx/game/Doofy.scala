@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 
 class Doofy {
-  def openGLVersion = Gdx.graphics.getGLVersion()
+  def openGLVersion = Gdx.graphics.getGLVersion.getRendererString
 
   def foo(t: Texture) {
     Gdx.app.log("ScalaDoofiez", s"${t.getWidth} x ${t.getHeight}")

@@ -4,8 +4,8 @@ apply plugin: "scala"
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/java/" ]
-sourceSets.main.scala.srcDirs = [ "src/scala/" ]
+sourceSets.main.scala.srcDirs = [ "src/scala/", "src/java/" ]
+sourceSets.main.java.srcDirs = []
 
 
 eclipse.project {

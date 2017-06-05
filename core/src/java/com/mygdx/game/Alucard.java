@@ -12,7 +12,7 @@ public class Alucard {
   float posX = 100.0f;
   float posY = 100.0f;
   float velX = 0.0f;
-  float walkSpeed = 1.0f;
+  float walkSpeed = 0.5f;
 
   Map<String, AnimatedSprite> animations;
   String activeAnimation;
@@ -20,7 +20,7 @@ public class Alucard {
 
   public Alucard(TextureAtlas atlas) {
     animations = new HashMap<String, AnimatedSprite>();
-    animations.put("idle", new AnimatedSprite(atlas, "idle", 0.12f));
+    animations.put("idle", new AnimatedSprite(atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG));
     animations.put("swalk", new AnimatedSprite(atlas, "swalk", 0.08f));
 
     activeAnimation = "idle";
