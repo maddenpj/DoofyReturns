@@ -18,7 +18,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   Player player;
   Controller playerOne;
   Sprite s;
-  Alucard purp;
+  // Alucard purp;
+  Purpucard purp;
 
   @Override
   public void create () {
@@ -34,7 +35,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     // sprite.setPosition(100.0f, 100.0f);
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
-    purp = new Alucard(atlas);
+    purp = new Purpucard(atlas);
+    purp.setPosition(10.0f,100.0f);
 
   }
 
