@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d._
 import com.badlogic.gdx.Input;
 
-class Purpucard(atlas: TextureAtlas ) extends HasPosition {
+class Purpucard(atlas: TextureAtlas ) extends Renderable with HasPosition {
   val walkSpeed = 0.5f;
   var activeAnimation = "idle"
 
