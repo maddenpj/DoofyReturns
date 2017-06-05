@@ -14,6 +14,7 @@ public class DesktopLauncher {
 
     TexturePacker.process("../raw/doom", "pack", "dguy");
     TexturePacker.process("../raw/warrior", "pack", "warrior");
+    TexturePacker.process("../raw/purpucard", "pack", "alucard");
     LwjglApplication app = new LwjglApplication(new DoofyReturnsGame(), config);
   }
 }
