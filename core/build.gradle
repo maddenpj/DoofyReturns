@@ -7,6 +7,9 @@ sourceCompatibility = 1.8
 sourceSets.main.scala.srcDirs = [ "src/scala/", "src/java/" ]
 sourceSets.main.java.srcDirs = []
 
+scalaConsole.dependsOn(build)
+scalaConsole.classpath += sourceSets.main.output
+scalaConsole.classpath += sourceSets.main.runtimeClasspath
 
 eclipse.project {
     name = appName + "-core"

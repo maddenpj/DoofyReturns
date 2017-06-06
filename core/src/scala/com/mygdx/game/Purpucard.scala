@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d._
 import com.badlogic.gdx.Input;
 
-class Purpucard(atlas: TextureAtlas ) extends Renderable with HasPosition {
+class Purpucard(atlas: TextureAtlas)
+    extends Renderable
+    with HasPosition
+    with PlayerControlled {
+
   val walkSpeed = 0.5f;
   var activeAnimation = "idle"
 
@@ -31,7 +35,5 @@ class Purpucard(atlas: TextureAtlas ) extends Renderable with HasPosition {
   }
 
   def draw (s: SpriteBatch) = animations(activeAnimation).draw(s)
-
-  def isKeyPressed(k: Int) = Gdx.input.isKeyPressed(k)
 
 }

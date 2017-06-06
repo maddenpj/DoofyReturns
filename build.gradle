@@ -54,7 +54,7 @@ project(":core") {
 
 
     dependencies {
-        /* runtime "org.scala-lang:scala-compiler:$versions.scala" */
+        runtime "org.scala-lang:scala-compiler:$scalaVersion"
         compile "org.scala-lang:scala-library:$scalaVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
