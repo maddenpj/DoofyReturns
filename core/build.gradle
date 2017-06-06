@@ -11,6 +11,13 @@ scalaConsole.dependsOn(build)
 scalaConsole.classpath += sourceSets.main.output
 scalaConsole.classpath += sourceSets.main.runtimeClasspath
 
+task repl(type:JavaExec) {
+  main = "scala.tools.nsc.MainGenericRunner"
+  classpath = sourceSets.main.runtimeClasspath
+  standardInput System.in
+  args '-usejavacp'
+}
+
 eclipse.project {
     name = appName + "-core"
 }
