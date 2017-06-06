@@ -2,7 +2,7 @@ package com.mygdx.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d._
-import com.badlogic.gdx.Input;
+
 
 class Purpucard(atlas: TextureAtlas)
     extends Renderable
@@ -20,8 +20,8 @@ class Purpucard(atlas: TextureAtlas)
   def update(dt: Float) {
     var vel = 0.0f
 
-    val moveRight = isKeyPressed(Input.Keys.RIGHT)
-    val moveLeft = isKeyPressed(Input.Keys.LEFT)
+    val moveRight = getInput("moveRight")
+    val moveLeft = getInput("moveLeft")
 
     activeAnimation = if (moveRight || moveLeft) {
       vel = if (moveRight) walkSpeed else -walkSpeed
