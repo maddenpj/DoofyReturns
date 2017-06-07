@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 
 
+// This really shouldn't be a trait. Should be an object contained in Player.
+// Not through inheritance bc bindings shouldn't be fixed at compile time
 trait PlayerControlled {
 
   val bindings = Map(
@@ -14,11 +16,7 @@ trait PlayerControlled {
     "punch"     -> Input.Keys.SPACE
   )
 
-  // could be very bad in terms of mutablity
-  def getInput = bindings.map { case (k,v) =>
-    k -> isKeyPressed(v)
-  }
-
+  def getInput() = bindings.filter(x => isKeyPressed(x._2)).keySet
   def isKeyPressed(k: Int) = Gdx.input.isKeyPressed(k)
 }
 

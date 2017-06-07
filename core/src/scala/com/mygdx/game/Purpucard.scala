@@ -19,12 +19,9 @@ class Purpucard(atlas: TextureAtlas)
 
   def update(dt: Float) {
     var vel = 0.0f
-
-    val moveRight = getInput("moveRight")
-    val moveLeft = getInput("moveLeft")
-
-    activeAnimation = if (moveRight || moveLeft) {
-      vel = if (moveRight) walkSpeed else -walkSpeed
+    val in = getInput()
+    activeAnimation = if (in("moveRight") || in("moveLeft")) {
+      vel = if (in("moveRight")) walkSpeed else -walkSpeed
       "swalk"
     } else "idle"
 
