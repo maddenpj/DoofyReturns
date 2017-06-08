@@ -51,7 +51,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     update();
     // Off white bc I was trying to match the bg color of anime spritesheet
     // you know bc converting the png to transparent bg was too hard :(
-    Gdx.gl.glClearColor(0.86f, 0.88f,0.86f, 1);
+    Gdx.gl.glClearColor(0.0f, 0.0f,0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     batch.begin();
