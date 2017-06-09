@@ -39,6 +39,7 @@ class Purpucard(atlas: TextureAtlas)
     incrPosition(vel)
     animations.values.foreach(_.setPosition(posX, posY))
     animations(activeAnimation).playAnimation(dt)
+    animations.filterNot(_._1 == activeAnimation).foreach(_._2.stopAnimation)
   }
 
 
