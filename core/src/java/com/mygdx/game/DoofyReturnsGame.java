@@ -24,8 +24,6 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   @Override
   public void create () {
 
-    Doofy d = new Doofy();
-    Gdx.app.log("DoofyReturnsGame", d.openGLVersion());
 
     batch = new SpriteBatch();
     // TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/dguy.atlas"));

@@ -45,7 +45,7 @@ public class AnimatedSprite {
   public AnimatedSprite (TextureAtlas atlas, String name, float fps) {
     this(atlas, name, fps, Animation.PlayMode.LOOP);
   }
-  
+
 
   // Gotta be a way to play animations without using total elapsed time. like fucking just dt. dt all you need. I need some deepthroat
   public void playAnimation(float deltaTime) {
@@ -68,6 +68,8 @@ public class AnimatedSprite {
 
   public float getX() { return sprite.getX(); }
   public float getY() { return sprite.getY(); }
+
+  public Sprite getSprite() { return sprite; }
 
   // From stackoverflow
   private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float fps) {

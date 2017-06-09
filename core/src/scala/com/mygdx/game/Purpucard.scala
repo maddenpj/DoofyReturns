@@ -17,6 +17,7 @@ class Purpucard(atlas: TextureAtlas)
     "idle" -> new AnimatedSprite(atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG),
     "swalk" -> new AnimatedSprite(atlas, "swalk", 0.08f)
   )
+  animations("swalk").getSprite.setSize(105.0f, 61.0f)
 
   val bindings = Map(
     MoveRight -> Input.Keys.RIGHT,
