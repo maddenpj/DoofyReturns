@@ -122,10 +122,17 @@ punch
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 4
+  index: 3
 punch
   rotate: false
   xy: 674, 744
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 4
+punch
+  rotate: false
+  xy: 786, 852
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
