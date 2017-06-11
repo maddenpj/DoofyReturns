@@ -3,16 +3,28 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+
+/*********************************
+ * TODO:
+ *  Need to figure out interruptible/non-interuptible animations
+ *  Incorporate animation playtime into input handling
+ *    ie: can't start walking again until punch finishes
+ *
+ *********************************/
+
 
 public class AnimatedSprite {
-  
+
   Sprite sprite;
   Texture sheet;
   int sheetCols, sheetRows;
   Animation<TextureRegion> animation;
   float fps;
   float elapsedTime;
+  boolean interruptible = true;
   boolean animationStarted = false;
+  String name = "NONE";
 
 
   public AnimatedSprite (Texture sheet, int sRows, int sCols, float sFps, Animation.PlayMode mode) {
@@ -37,10 +49,16 @@ public class AnimatedSprite {
     this(sheet, sRows, sCols, sFps, Animation.PlayMode.LOOP);
   }
 
-  public AnimatedSprite (TextureAtlas atlas, String name, float fps, Animation.PlayMode mode) {
+  public AnimatedSprite (TextureAtlas atlas, String name, float fps, Animation.PlayMode mode, boolean interrupt) {
     animation = new Animation<TextureRegion>(fps, atlas.findRegions(name), mode);
     // sprite = new Sprite(animation.getKeyFrame(0));
     sprite = atlas.createSprite(name);
+    this.interruptible = interrupt;
+    this.name = name;
+  }
+
+  public AnimatedSprite (TextureAtlas atlas, String name, float fps, Animation.PlayMode mode) {
+    this(atlas, name, fps, mode, true);
   }
 
   public AnimatedSprite (TextureAtlas atlas, String name, float fps) {
@@ -56,8 +74,27 @@ public class AnimatedSprite {
     elapsedTime += deltaTime;
   }
 
-  public void stopAnimation() {
+  public void stop() {
     animationStarted = false;
+  }
+
+  public boolean isFinished() {
+    // Animation docs:
+    // Whether the animation would be finished if played without looping (PlayMode#NORMAL)
+    return animation.isAnimationFinished(elapsedTime);
+  }
+
+  public float getDuration() {
+    return animation.getAnimationDuration();
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public boolean canInterrupt() {
+    // if (!interruptible) return isFinished();
+    return interruptible;
   }
 
   public void draw(SpriteBatch s) {
@@ -76,7 +113,7 @@ public class AnimatedSprite {
 
   // From stackoverflow
   private Animation<TextureRegion> fromSpritesheet(Texture img, int columns, int rows, float fps) {
-    TextureRegion[][] tmp = TextureRegion.split(img, 
+    TextureRegion[][] tmp = TextureRegion.split(img,
         img.getWidth() / columns,
         img.getHeight() / rows);
     TextureRegion[] walkFrames = new TextureRegion[columns * rows];
