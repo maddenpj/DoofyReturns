@@ -13,7 +13,7 @@ trait PlayerControlled {
   case object MoveRight extends Action
   case object MoveUp extends Action
   case object MoveDown extends Action
-  case object Jump extends Action
+  case object Punch extends Action
 
   def bindings: Map[Action, Int]
   def getInput() = bindings.filter(x => isKeyPressed(x._2)).keySet

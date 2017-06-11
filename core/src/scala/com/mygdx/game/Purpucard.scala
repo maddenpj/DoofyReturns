@@ -15,7 +15,8 @@ class Purpucard(atlas: TextureAtlas)
 
   val animations = Map(
     "idle" -> new AnimatedSprite(atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG),
-    "swalk" -> new AnimatedSprite(atlas, "swalk", 0.08f)
+    "swalk" -> new AnimatedSprite(atlas, "swalk", 0.08f),
+    "punch" -> new AnimatedSprite(atlas, "punch", 0.08f, Animation.PlayMode.NORMAL)
   )
   animations("swalk").getSprite.setSize(105.0f, 61.0f)
 
@@ -24,14 +25,16 @@ class Purpucard(atlas: TextureAtlas)
     MoveLeft  -> Input.Keys.LEFT,
     MoveUp    -> Input.Keys.UP,
     MoveDown  -> Input.Keys.DOWN,
-    Jump -> Input.Keys.SPACE
+    Punch -> Input.Keys.SPACE
   )
 
   def update(dt: Float) {
     var vel = 0.0f
 
     val in = getInput()
-    activeAnimation = if (in(MoveRight) || in(MoveLeft)) {
+    activeAnimation = if (in(Punch)) {
+      "punch"
+    } else if (in(MoveRight) || in(MoveLeft)) {
       vel = if (in(MoveRight)) walkSpeed else -walkSpeed
       "swalk"
     } else "idle"
