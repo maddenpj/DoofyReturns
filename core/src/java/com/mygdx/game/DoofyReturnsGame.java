@@ -9,6 +9,10 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.mappings.Xbox;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+
+import com.mygdx.game.background.*;
+
 
 public class DoofyReturnsGame extends ApplicationAdapter {
   final String TAG = "DoofyReturnsGame";
@@ -20,6 +24,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   Sprite s;
   // Alucard purp;
   Purpucard purp;
+  // Texture background;
+  ParallaxBackground background;
 
   @Override
   public void create () {
@@ -32,6 +38,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     // sprite = new AnimatedSprite(alucardSheet, 1, 31, 0.08f);
     // sprite.setPosition(100.0f, 100.0f);
 
+    ParallaxLayer pl = new ParallaxLayer(
+        new TextureRegion(new Texture(Gdx.files.internal("d4background.bmp"))),
+        new Vector2(),
+        new Vector2(0, 0)
+    );
+    background = new ParallaxBackground(new ParallaxLayer[]{pl}, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(150, 0));
+    
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas);
     purp.setPosition(10.0f,100.0f);
@@ -53,7 +66,10 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     batch.begin();
+
     purp.draw(batch);
+    background.render(0.0f);
+
     batch.end();
   }
 
