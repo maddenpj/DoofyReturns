@@ -60,4 +60,7 @@ class Purpucard(atlas: TextureAtlas)
   }
 
   def draw (s: SpriteBatch) = activeAnimation.draw(s)
+
+  def getWidth() = activeAnimation.getSprite.getWidth
+  def getHeight() = activeAnimation.getSprite.getHeight
 }

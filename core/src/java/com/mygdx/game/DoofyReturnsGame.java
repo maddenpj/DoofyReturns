@@ -4,8 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.mappings.Xbox;
@@ -27,6 +29,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   Texture background;
   // ParallaxBackground background;
   OrthographicCamera camera = new OrthographicCamera();
+  ShapeRenderer debugRenderer;
+  boolean debug = true;
 
   @Override
   public void create () {
@@ -57,6 +61,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     camera.update();
     background = new Texture(Gdx.files.internal("d4background.bmp"));
 
+    debugRenderer = new ShapeRenderer();
+
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas);
     purp.setPosition(40.0f,200.0f);
@@ -71,9 +77,6 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     if (purp.getX() > halfWidth) {
       camera.position.x = purp.getX();
     }
-
-    // camera.position.x = purp.getX();
-    Gdx.app.log("purp pos", ""+ purp.getX() + ", "+purp.getY());
     camera.update();
   }
 
@@ -104,6 +107,16 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     purp.draw(batch);
 
     batch.end();
+
+    if(debug) renderDebug();
+  }
+
+  public void renderDebug() {
+    debugRenderer.setProjectionMatrix(camera.combined);
+    debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+    debugRenderer.setColor(Color.RED);
+    debugRenderer.rect(purp.getX(), purp.getY(), purp.getWidth(), purp.getHeight());
+    debugRenderer.end();
   }
 
   @Override
