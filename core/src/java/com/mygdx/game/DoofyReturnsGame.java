@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.mappings.Xbox;
@@ -19,13 +20,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   SpriteBatch batch;
   // Texture img;
   AnimatedSprite sprite;
-  Player player;
   Controller playerOne;
   Sprite s;
   // Alucard purp;
   Purpucard purp;
-  // Texture background;
-  ParallaxBackground background;
+  Texture background;
+  // ParallaxBackground background;
+  OrthographicCamera camera = new OrthographicCamera();
 
   @Override
   public void create () {
@@ -38,19 +39,24 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     // sprite = new AnimatedSprite(alucardSheet, 1, 31, 0.08f);
     // sprite.setPosition(100.0f, 100.0f);
 
-    ParallaxLayer pl = new ParallaxLayer(
-        new TextureRegion(new Texture(Gdx.files.internal("d4background.bmp"))),
-        new Vector2(1.0f, 0.0f),
-        new Vector2(0, 0)
-    );
-    background = new ParallaxBackground(
-        new ParallaxLayer[]{pl},
-        Gdx.graphics.getWidth(),
-        Gdx.graphics.getHeight(),
-        new Vector2(10, 0)
-        // ,batch
-      );
+    // ParallaxLayer pl = new ParallaxLayer(
+        // new TextureRegion(new Texture(Gdx.files.internal("d4background.bmp"))),
+        // new Vector2(1.0f, 0.0f),
+        // new Vector2(0, 0)
+    // );
+    // background = new ParallaxBackground(
+        // new ParallaxLayer[]{pl},
+        // Gdx.graphics.getWidth(),
+        // Gdx.graphics.getHeight(),
+        // new Vector2(10, 0)
+        // // ,batch
+      // );
     
+
+    camera.setToOrtho(false);
+    camera.update();
+    background = new Texture(Gdx.files.internal("d4background.bmp"));
+
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas);
     purp.setPosition(40.0f,200.0f);
@@ -61,6 +67,14 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     // player.update(Gdx.graphics.getDeltaTime());
     float dt = Gdx.graphics.getDeltaTime();
     purp.update(dt);
+    float halfWidth = Gdx.graphics.getWidth() / 2.0f;
+    if (purp.getX() > halfWidth) {
+      camera.position.x = purp.getX();
+    }
+
+    // camera.position.x = purp.getX();
+    Gdx.app.log("purp pos", ""+ purp.getX() + ", "+purp.getY());
+    camera.update();
   }
 
   @Override
@@ -71,18 +85,22 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     Gdx.gl.glClearColor(0.0f, 0.0f,0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    float delta = 0.0f;
-    if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-      delta = 1.0f;
-    }
-    else if (Gdx.input.isKeyPressed(Input.Keys.J)) {
-      delta = -1.0f;
-    }
+    // float delta = 0.0f;
+    // if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+      // delta = 1.0f;
+    // }
+    // else if (Gdx.input.isKeyPressed(Input.Keys.J)) {
+      // delta = -1.0f;
+    // }
+    // camera.position.x += delta;
+    // camera.update();
 
 
-    background.render(delta);
+    // background.render(delta);
+    batch.setProjectionMatrix(camera.combined);
     batch.begin();
 
+    batch.draw(background, 0.0f, 0.0f); 
     purp.draw(batch);
 
     batch.end();

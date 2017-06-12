@@ -10,7 +10,7 @@ class Purpucard(atlas: TextureAtlas)
     with HasPosition
     with PlayerControlled {
 
-  val walkSpeed = 0.5f;
+  val walkSpeed = 2.5f;
   var activeAnimationName = "idle"
 
   val animations = Map(
