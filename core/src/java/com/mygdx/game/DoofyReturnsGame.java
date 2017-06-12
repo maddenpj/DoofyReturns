@@ -47,7 +47,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
         new ParallaxLayer[]{pl},
         Gdx.graphics.getWidth(),
         Gdx.graphics.getHeight(),
-        new Vector2(150, 0)
+        new Vector2(10, 0)
         // ,batch
       );
     
@@ -74,6 +74,9 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     float delta = 0.0f;
     if (Gdx.input.isKeyPressed(Input.Keys.K)) {
       delta = 1.0f;
+    }
+    else if (Gdx.input.isKeyPressed(Input.Keys.J)) {
+      delta = -1.0f;
     }
 
 
