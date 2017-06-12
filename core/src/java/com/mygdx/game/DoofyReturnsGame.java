@@ -40,14 +40,20 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
     ParallaxLayer pl = new ParallaxLayer(
         new TextureRegion(new Texture(Gdx.files.internal("d4background.bmp"))),
-        new Vector2(),
+        new Vector2(1.0f, 0.0f),
         new Vector2(0, 0)
     );
-    background = new ParallaxBackground(new ParallaxLayer[]{pl}, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(150, 0));
+    background = new ParallaxBackground(
+        new ParallaxLayer[]{pl},
+        Gdx.graphics.getWidth(),
+        Gdx.graphics.getHeight(),
+        new Vector2(150, 0)
+        // ,batch
+      );
     
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas);
-    purp.setPosition(10.0f,100.0f);
+    purp.setPosition(40.0f,200.0f);
 
   }
 
@@ -65,10 +71,16 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     Gdx.gl.glClearColor(0.0f, 0.0f,0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+    float delta = 0.0f;
+    if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+      delta = 1.0f;
+    }
+
+
+    background.render(delta);
     batch.begin();
 
     purp.draw(batch);
-    background.render(0.0f);
 
     batch.end();
   }

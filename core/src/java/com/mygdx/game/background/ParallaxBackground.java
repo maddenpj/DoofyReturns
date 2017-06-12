@@ -18,10 +18,12 @@ public class ParallaxBackground {
     * @param height The screenHeight
     * @param speed A Vector2 attribute to point out the x and y speed
     */
+   // public ParallaxBackground(ParallaxLayer[] layers,float width,float height,Vector2 speed, SpriteBatch batch){
    public ParallaxBackground(ParallaxLayer[] layers,float width,float height,Vector2 speed){
       this.layers = layers;
       this.speed.set(speed);
       camera = new OrthographicCamera(width, height);
+      // this.batch = batch;
       batch = new SpriteBatch();
    }
    
