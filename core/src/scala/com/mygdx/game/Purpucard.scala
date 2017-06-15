@@ -3,9 +3,11 @@ package com.mygdx.game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d._
+import com.badlogic.gdx.math.{Rectangle, Vector2}
 
 
-class Purpucard(atlas: TextureAtlas)
+// Also gross to pass in level bounds like this
+class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     extends Renderable
     with HasPosition
     with PlayerControlled {
@@ -35,16 +37,21 @@ class Purpucard(atlas: TextureAtlas)
     case _ => "idle"
   }
 
+  // update(in: Set[Action], dt: Float)? might be better
+  // but breaks Renderable
   def update(dt: Float) {
-    var vel = 0.0f
+    // var vel = 0.0f
+    val vel = new Vector2
 
     // This is so gross
     val in = getInput()
     if (activeAnimation.canInterrupt) {
       activeAnimationName = animBindings(in)
       if (in(MoveRight) || in(MoveLeft)) {
-        vel = if (in(MoveRight)) walkSpeed else -walkSpeed
+        vel.x = if (in(MoveRight)) walkSpeed else -walkSpeed
       }
+      if (in(MoveUp)) vel.y = walkSpeed
+      if (in(MoveDown)) vel.y = -walkSpeed
     } else {
       if (activeAnimation.isFinished) {
         // activeAnimation.stop
@@ -53,7 +60,10 @@ class Purpucard(atlas: TextureAtlas)
       }
     }
 
-    incrPosition(vel)
+    if (levelRect.contains(vel.cpy.add(getX, getY))) {
+      incrPosition(vel)
+    }
+
     animations.values.foreach(_.setPosition(posX, posY))
     activeAnimation.playAnimation(dt)
     animations.filterNot(_._1 == activeAnimationName).foreach(_._2.stop)
@@ -63,4 +73,5 @@ class Purpucard(atlas: TextureAtlas)
 
   def getWidth() = activeAnimation.getSprite.getWidth
   def getHeight() = activeAnimation.getSprite.getHeight
+  def getRect() = new Rectangle(getX, getY, getWidth, getHeight)
 }

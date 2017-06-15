@@ -13,6 +13,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.mappings.Xbox;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 
 import com.mygdx.game.background.*;
 
@@ -27,10 +28,12 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   // Alucard purp;
   Purpucard purp;
   Texture background;
+  Rectangle levelRect;
   // ParallaxBackground background;
   OrthographicCamera camera = new OrthographicCamera();
   ShapeRenderer debugRenderer;
   boolean debug = true;
+
 
   @Override
   public void create () {
@@ -60,12 +63,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     camera.setToOrtho(false);
     camera.update();
     background = new Texture(Gdx.files.internal("d4background.bmp"));
+    levelRect = new Rectangle(0, 0, 2046, 101);
 
     debugRenderer = new ShapeRenderer();
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
-    purp = new Purpucard(atlas);
-    purp.setPosition(40.0f,200.0f);
+    purp = new Purpucard(atlas, levelRect);
+    purp.setPosition(40.0f, 20.0f);
 
   }
 
@@ -95,6 +99,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     // else if (Gdx.input.isKeyPressed(Input.Keys.J)) {
       // delta = -1.0f;
     // }
+    // levelRect.y += delta;
+    // Gdx.app.log("levelRect", levelRect.toString());
     // camera.position.x += delta;
     // camera.update();
 
@@ -115,7 +121,10 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     debugRenderer.setProjectionMatrix(camera.combined);
     debugRenderer.begin(ShapeRenderer.ShapeType.Line);
     debugRenderer.setColor(Color.RED);
-    debugRenderer.rect(purp.getX(), purp.getY(), purp.getWidth(), purp.getHeight());
+    Rectangle purpRect = purp.getRect();
+    debugRenderer.rect(purpRect.x, purpRect.y, purpRect.width, purpRect.height);
+    debugRenderer.setColor(Color.BLUE);
+    debugRenderer.rect(levelRect.x, levelRect.y, levelRect.width, levelRect.height);
     debugRenderer.end();
   }
 
