@@ -13,6 +13,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     with PlayerControlled {
 
   val walkSpeed = 2.5f;
+  val spriteScale = 3.0f;
   var activeAnimationName = "idle"
 
   val animations = Map(
@@ -22,6 +23,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   )
   def activeAnimation() = animations(activeAnimationName)
   // animations("walking").getSprite.setSize(105.0f, 61.0f)
+  animations.values.foreach(_.getSprite.setScale(spriteScale))
 
   val bindings = Map(
     MoveRight -> Input.Keys.RIGHT,

@@ -14,6 +14,7 @@ import com.badlogic.gdx.controllers.mappings.Xbox;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.Preferences;
 
 import com.mygdx.game.background.*;
 
@@ -37,6 +38,10 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
   @Override
   public void create () {
+
+    Preferences prefs = Gdx.app.getPreferences("doofy");
+    // prefs.putString("Foo", "What is a man? A miserable pile of secrets");
+    Gdx.app.log("Prefs", prefs.getString("Foo"));
 
 
     batch = new SpriteBatch();
