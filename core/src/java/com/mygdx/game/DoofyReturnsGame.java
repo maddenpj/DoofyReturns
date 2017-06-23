@@ -43,28 +43,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     // prefs.putString("Foo", "What is a man? A miserable pile of secrets");
     Gdx.app.log("Prefs", prefs.getString("Foo"));
 
-
     batch = new SpriteBatch();
-    // TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/dguy.atlas"));
-    // player = new Player(atlas);
-    // Texture alucardSheet = new Texture(Gdx.files.internal("purpucard_walk.png")); //31
-    // sprite = new AnimatedSprite(alucardSheet, 1, 31, 0.08f);
-    // sprite.setPosition(100.0f, 100.0f);
-
-    // ParallaxLayer pl = new ParallaxLayer(
-        // new TextureRegion(new Texture(Gdx.files.internal("d4background.bmp"))),
-        // new Vector2(1.0f, 0.0f),
-        // new Vector2(0, 0)
-    // );
-    // background = new ParallaxBackground(
-        // new ParallaxLayer[]{pl},
-        // Gdx.graphics.getWidth(),
-        // Gdx.graphics.getHeight(),
-        // new Vector2(10, 0)
-        // // ,batch
-      // );
-    
-
     camera.setToOrtho(false);
     camera.update();
     background = new Texture(Gdx.files.internal("d4background.bmp"));
@@ -74,7 +53,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas, levelRect);
-    purp.setPosition(40.0f, 20.0f);
+    purp.setPosition(40.0f, 50.0f);
 
   }
 
