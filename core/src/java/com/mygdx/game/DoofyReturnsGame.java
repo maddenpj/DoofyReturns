@@ -32,7 +32,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   // ParallaxBackground background;
   OrthographicCamera camera = new OrthographicCamera();
   ShapeRenderer debugRenderer;
-  boolean debug = true;
+  boolean debug = false;
 
 
   @Override

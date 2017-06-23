@@ -17,11 +17,11 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   val animations = Map(
     "idle" -> new AnimatedSprite(atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG),
-    "swalk" -> new AnimatedSprite(atlas, "swalk", 0.08f),
+    "walking" -> new AnimatedSprite(atlas, "walking", 0.08f),
     "punch" -> new AnimatedSprite(atlas, "punch", 0.08f, Animation.PlayMode.NORMAL, false)
   )
   def activeAnimation() = animations(activeAnimationName)
-  animations("swalk").getSprite.setSize(105.0f, 61.0f)
+  // animations("walking").getSprite.setSize(105.0f, 61.0f)
 
   val bindings = Map(
     MoveRight -> Input.Keys.RIGHT,
@@ -33,12 +33,17 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   def animBindings(a: Set[Action]) = a match {
     case _ if a.contains(Punch) => "punch"
-    case _ if a.nonEmpty => "swalk"
+    case _ if a.nonEmpty => "walking"
     case _ => "idle"
   }
 
   // update(in: Set[Action], dt: Float)? might be better
   // but breaks Renderable
+  //
+  // Thinking out loud, how do games work
+  // (Input) -> [Engine layer] -> Player action
+  // ie: Just bc moveRight is down doesn't mean player will move (wall, etc)
+  //
   def update(dt: Float) {
     // var vel = 0.0f
     val vel = new Vector2
