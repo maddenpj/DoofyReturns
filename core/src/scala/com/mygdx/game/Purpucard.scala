@@ -95,7 +95,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     //   -> handleInput()
     //   -> handleCollisions()
     if (levelRect.contains(vel.cpy.add(getX, getY))) {
-      incrPosition(vel)
+      incrPosition(vel.nor.scl(walkSpeed))
     }
 
     animations.values.foreach(_.setPosition(posX, posY))
