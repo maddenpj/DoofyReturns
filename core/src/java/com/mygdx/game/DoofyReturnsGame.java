@@ -39,9 +39,11 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   @Override
   public void create () {
 
-    Preferences prefs = Gdx.app.getPreferences("doofy");
+    Preferences prefs = Gdx.app.getPreferences("com.pensi.doofy");
     // prefs.putString("Foo", "What is a man? A miserable pile of secrets");
     Gdx.app.log("Prefs", prefs.getString("Foo"));
+    prefs.flush();
+
 
     batch = new SpriteBatch();
     camera.setToOrtho(false);
