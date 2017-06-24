@@ -22,7 +22,8 @@ import com.mygdx.game.background.*;
 
 
 public class DoofyReturnsGame extends ApplicationAdapter {
-  final String TAG = "DoofyReturnsGame";
+
+  Preferences prefs;
   SpriteBatch batch;
   // Texture img;
   AnimatedSprite sprite;
@@ -35,17 +36,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   // ParallaxBackground background;
   OrthographicCamera camera = new OrthographicCamera();
   ShapeRenderer debugRenderer;
-  boolean debug = true;
+  boolean debug;
   GifRecorder recorder;
-
 
   @Override
   public void create () {
 
-    Preferences prefs = Gdx.app.getPreferences("com.pensi.doofy");
-    // prefs.putString("Foo", "What is a man? A miserable pile of secrets");
-    Gdx.app.log("Prefs", prefs.getString("Foo"));
-    prefs.flush();
+    prefs = Gdx.app.getPreferences("com.pensi.doofy");
 
 
     batch = new SpriteBatch();
@@ -55,9 +52,12 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     levelRect = new Rectangle(0, 0, 2046, 101);
 
 
-    recorder = new GifRecorder(batch);
-    recorder.setResizeKey(Input.Keys.R);
-    debugRenderer = new ShapeRenderer();
+    debug = prefs.getBoolean("debug", false);
+    if (debug) {
+      recorder = new GifRecorder(batch);
+      recorder.setResizeKey(Input.Keys.R);
+      debugRenderer = new ShapeRenderer();
+    }
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas, levelRect);
@@ -126,16 +126,16 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   @Override
   public void dispose () {
     batch.dispose();
-    // img.dispose();
+    prefs.flush();
   }
 
   private void isPlayerOneReady() {
-    Gdx.app.log(TAG, "Controllers:");
+    Gdx.app.log("ControllerSupport", "Controllers:");
     for (Controller controller : Controllers.getControllers()) {
-      Gdx.app.log(TAG, controller.getName());
+      Gdx.app.log("ControllerSupport", controller.getName());
       if (Xbox.isXboxController(controller)) {
         playerOne = controller;
-        Gdx.app.log(TAG, "Ready Player One.");
+        Gdx.app.log("ControllerSupport", "Ready Player One.");
       }
     }
   }
