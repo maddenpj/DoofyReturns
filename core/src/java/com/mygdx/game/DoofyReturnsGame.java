@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Preferences;
 
+import io.anuke.gif.GifRecorder;
+
 import com.mygdx.game.background.*;
 
 
@@ -33,7 +35,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   // ParallaxBackground background;
   OrthographicCamera camera = new OrthographicCamera();
   ShapeRenderer debugRenderer;
-  boolean debug = false;
+  boolean debug = true;
+  GifRecorder recorder;
 
 
   @Override
@@ -51,6 +54,9 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     background = new Texture(Gdx.files.internal("d4background.bmp"));
     levelRect = new Rectangle(0, 0, 2046, 101);
 
+
+    recorder = new GifRecorder(batch);
+    recorder.setResizeKey(Input.Keys.R);
     debugRenderer = new ShapeRenderer();
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
@@ -100,7 +106,10 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
     batch.end();
 
-    if(debug) renderDebug();
+    if(debug) {
+      recorder.update();
+      renderDebug();
+    }
   }
 
   public void renderDebug() {

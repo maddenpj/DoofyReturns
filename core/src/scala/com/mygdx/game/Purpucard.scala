@@ -70,6 +70,8 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   // (Input) -> [Engine layer] -> Player action
   // ie: Just bc moveRight is down doesn't mean player will move (wall, etc)
   //
+  //  TODO 4AM EDIT: THIS IS A STATE Monad!
+  //
   def update(dt: Float) {
     // var vel = 0.0f
     val vel = new Vector2
