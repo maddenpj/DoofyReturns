@@ -37,6 +37,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   var activeAnimationName = "idle"
 
   // Coupling these together was a shit idea
+  // Prob should be just a Seq()
   val animations = Map(
     "idle"        -> StateAnimation(Idle, new AnimatedSprite( atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG)),
     "walking"     -> StateAnimation(Moving, new AnimatedSprite( atlas, "walking", 0.08f)),
@@ -73,22 +74,12 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     PlayerInput.Punch -> Input.Keys.SPACE
   )
 
-  // (a: Set[Action]) => String
-  // But now we have Purpucard.State
-  // def animBindings(a: Set[Action]) = a match {
-    // case _ if a.contains(Punch) => "punch"
-    // case _ if a.nonEmpty => "walking"
-    // case _ => "idle"
-  // }
-
   def animState(animName: String) = animName match {
     case "punch" => Purpucard.Punching
     case "walking" => Purpucard.Moving //TODO - dangerous
     case _ if animName.contains("startwalk") => Purpucard.MovementTransition
     case "idle" => Purpucard.Idle
   }
-
-
 
   // update(in: Set[Action], dt: Float)? might be better
   // but breaks Renderable
@@ -100,58 +91,37 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   //  TODO 4AM EDIT: THIS IS A STATE Monad!
   //
   def update(dt: Float) {
-    // var vel = 0.0f
-
-    // This is so gross
     val in = getInput()
-    // if (activeAnimation.canInterrupt) {
-      // activeAnimationName = animBindings(in)
-      // if (in(MoveRight)) vel.x = walkSpeed
-      // if (in(MoveLeft)) vel.x = -walkSpeed
-      // if (in(MoveUp)) vel.y = walkSpeed
-      // if (in(MoveDown)) vel.y = -walkSpeed
-    // } else {
-      // if (activeAnimation.isFinished) {
-        // activeAnimationName = "idle"
-      // }
-    // }
-    // if (Gdx.input.isKeyPressed(Input.Keys.N)) {
-      // activeAnimationName = "startwalk"
-    // }
-    // if (Gdx.input.isKeyPressed(Input.Keys.M)) {
-      // activeAnimationName = "startwalk_r"
-    // }
-
     activeState = stateTransition(in, activeState)
-    val vel = computeVelocity(in, activeState)
-    Gdx.app.log("alucard", s"${activeState.state} - $in - $vel")
+    val vel = computeVelocity(in, activeState) // Don't like the order dependence here
 
-    // So this can be abstracted out to be done "later"
-    // Or globally ie: for all entities in game
-    // aka update() breaks down into
-    //   -> handleInput()
-    //   -> handleCollisions()
+    // Gdx.app.log(s"${activeState.state}", s"${Seq(activeAnimation.getName, activeAnimation.getDuration, activeAnimation.isFinished)}")
+
+    // Collision detection
     if (levelRect.contains(vel.cpy.add(getX, getY))) {
       incrPosition(vel.nor.scl(walkSpeed))
     }
 
     animations.values.foreach(_.animation.setPosition(posX, posY))
     activeState.animation.playAnimation(dt)
-    // animations.filterNot(_._1 == activeAnimationName).foreach(_._2.stop)
+    animations.values.filterNot(_ == activeState).foreach(_.animation.stop)
   }
 
   def activeAnimation() = activeState.animation
 
   def inputAllowed(state: StateAnimation) = state.animation.canInterrupt || state.animation.isFinished
 
-  def stateTransition(in: Set[PlayerInput.Action], state: StateAnimation) = if (!inputAllowed(state)) state
-    else if (in.contains(PlayerInput.Punch)) animations("punch")
-    else if (in.exists(PlayerInput.movement.contains)) state match {
-      case StateAnimation(Idle, _) => animations("startwalk")
-      case StateAnimation(MovementTransition, _) => animations("walking")
-      // case StateAnimation(Moving, _) => state
-      case _ => state
-    } else animations("idle")
+  // TODO: Needs to switch back to idle when punch animation is done
+  def stateTransition(in: Set[PlayerInput.Action], state: StateAnimation) =
+    if (state.animation.canInterrupt) in match {
+        case _ if in.contains(PlayerInput.Punch) => animations("punch")
+        case _ if in.exists(PlayerInput.movement.contains) => walkTransition(in, state)
+        case _ => animations("idle")
+    } else if (state.animation.isFinished) animations("idle")
+      else state
+
+
+  def walkTransition(in: Set[PlayerInput.Action], state: StateAnimation) = animations("walking")
 
   def computeVelocity(in: Set[PlayerInput.Action], state: StateAnimation) = {
     val vel = new Vector2();
