@@ -109,56 +109,56 @@ idle
   orig: 75, 75
   offset: 0, 0
   index: 15
-jump
+injured
   rotate: false
   xy: 2, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 1
-jump
+injured
   rotate: false
   xy: 79, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 2
-jump
+injured
   rotate: false
   xy: 156, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 3
-jump
+injured
   rotate: false
   xy: 233, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 4
-jump
+injured
   rotate: false
   xy: 310, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 5
-jump
+injured
   rotate: false
   xy: 387, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 6
-jump
+injured
   rotate: false
   xy: 79, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: 7
-jump
+injured
   rotate: false
   xy: 156, 79
   size: 75, 75
@@ -171,276 +171,332 @@ jump
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 9
+  index: 1
 jump
   rotate: false
   xy: 310, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 10
+  index: 2
 jump
   rotate: false
   xy: 387, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 11
+  index: 3
 jump
   rotate: false
   xy: 464, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 12
-punch
+  index: 4
+jump
   rotate: false
   xy: 156, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 1
-punch
+  index: 5
+jump
   rotate: false
   xy: 233, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 2
-punch
+  index: 6
+jump
   rotate: false
   xy: 310, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 3
-punch
+  index: 7
+jump
   rotate: false
   xy: 387, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 4
-punch
+  index: 8
+jump
   rotate: false
   xy: 464, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 5
-startwalk
+  index: 9
+jump
   rotate: false
   xy: 541, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 1
-startwalk
+  index: 10
+jump
   rotate: false
   xy: 233, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 2
-startwalk
+  index: 11
+jump
   rotate: false
   xy: 310, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 3
-startwalk
+  index: 12
+punch
   rotate: false
   xy: 387, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 4
-startwalk
+  index: 1
+punch
   rotate: false
   xy: 464, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 5
-startwalk
+  index: 2
+punch
   rotate: false
   xy: 541, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 6
-startwalk
+  index: 3
+punch
   rotate: false
   xy: 618, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 7
-startwalk
+  index: 4
+punch
   rotate: false
   xy: 310, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 8
+  index: 5
 startwalk
   rotate: false
   xy: 387, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 9
+  index: 1
 startwalk
   rotate: false
   xy: 464, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 10
+  index: 2
 startwalk
   rotate: false
   xy: 541, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 11
+  index: 3
 startwalk
   rotate: false
   xy: 618, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 12
+  index: 4
 startwalk
   rotate: false
   xy: 695, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 13
+  index: 5
 startwalk
   rotate: false
   xy: 387, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 14
+  index: 6
 startwalk
   rotate: false
   xy: 464, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 15
-walking
+  index: 7
+startwalk
   rotate: false
   xy: 541, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 1
-walking
+  index: 8
+startwalk
   rotate: false
   xy: 618, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 2
-walking
+  index: 9
+startwalk
   rotate: false
   xy: 695, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 3
-walking
+  index: 10
+startwalk
   rotate: false
   xy: 772, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 4
-walking
+  index: 11
+startwalk
   rotate: false
   xy: 464, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 5
-walking
+  index: 12
+startwalk
   rotate: false
   xy: 541, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 6
-walking
+  index: 13
+startwalk
   rotate: false
   xy: 618, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 7
-walking
+  index: 14
+startwalk
   rotate: false
   xy: 695, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 8
+  index: 15
 walking
   rotate: false
   xy: 772, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 9
+  index: 1
 walking
   rotate: false
   xy: 849, 387
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 10
+  index: 2
 walking
   rotate: false
   xy: 541, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 11
+  index: 3
 walking
   rotate: false
   xy: 618, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 12
+  index: 4
 walking
   rotate: false
   xy: 695, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 13
+  index: 5
 walking
   rotate: false
   xy: 772, 233
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 14
+  index: 6
 walking
   rotate: false
   xy: 849, 310
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
-  index: 15
+  index: 7
 walking
   rotate: false
   xy: 926, 387
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 8
+walking
+  rotate: false
+  xy: 618, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 9
+walking
+  rotate: false
+  xy: 695, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 10
+walking
+  rotate: false
+  xy: 772, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 11
+walking
+  rotate: false
+  xy: 849, 233
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 12
+walking
+  rotate: false
+  xy: 926, 310
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 13
+walking
+  rotate: false
+  xy: 695, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 14
+walking
+  rotate: false
+  xy: 772, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 15
+walking
+  rotate: false
+  xy: 849, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
