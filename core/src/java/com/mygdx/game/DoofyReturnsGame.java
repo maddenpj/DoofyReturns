@@ -59,6 +59,9 @@ public class DoofyReturnsGame extends ApplicationAdapter {
       debugRenderer = new ShapeRenderer();
     }
 
+
+    Gdx.input.setInputProcessor(PlayerState.defaultInputProcessor());
+
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas, levelRect);
     purp.setPosition(40.0f, 50.0f);

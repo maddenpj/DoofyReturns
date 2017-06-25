@@ -6,29 +6,13 @@ import com.badlogic.gdx.graphics.g2d._
 import com.badlogic.gdx.math.{Rectangle, Vector2}
 
 
-object Purpucard {
-
-  sealed trait State {
-    val moves = false
-  }
-  case object Idle extends State
-  case object Punching extends State
-  case object MovementTransition extends State { override val moves = true }
-  case object Moving extends State { override val moves = true }
-
-  case class StateAnimation(state: State, animation: AnimatedSprite)
-
-
-
-}
 
 
 // Also gross to pass in level bounds like this
 class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     extends Renderable
-    with HasPosition
-    with PlayerInput {
-    import Purpucard._
+    with HasPosition {
+    import PlayerState._
 
 
   val walkSpeed = 2.5f;
@@ -46,17 +30,10 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   )
   var activeState: StateAnimation = animations("idle")
   var lastState = activeState.state
+  // animations("punch").animation.flipFrames(true, false)
 
   // Might cause issues
   animations.values.foreach(_.animation.getSprite.setScale(spriteScale))
-
-  val bindings = Map(
-    PlayerInput.MoveRight -> Input.Keys.RIGHT,
-    PlayerInput.MoveLeft  -> Input.Keys.LEFT,
-    PlayerInput.MoveUp    -> Input.Keys.UP,
-    PlayerInput.MoveDown  -> Input.Keys.DOWN,
-    PlayerInput.Punch -> Input.Keys.SPACE
-  )
 
   // update(in: Set[Action], dt: Float)? might be better
   // but breaks Renderable
@@ -68,7 +45,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   //  TODO 4AM EDIT: THIS IS A STATE Monad!
   //
   def update(dt: Float) {
-    val in = getInput()
+    val in = PlayerState.defaultInputProcessor.getInput()
     lastState = activeState.state
     activeState = stateTransition(in, activeState)
     val vel = computeVelocity(in, activeState) // Don't like the order dependence here
@@ -87,29 +64,31 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   def activeAnimation() = activeState.animation
 
-  def stateTransition(in: Set[PlayerInput.Action], state: StateAnimation) =
+  // TODO: Ok so this is all the state machine transistion stuff for the keyDown "event"
+  //        need to complete state machine with transistions for keyUp
+  def stateTransition(in: Set[InputAction], state: StateAnimation) =
     if (state.animation.canInterrupt) in match {
-        case _ if in.contains(PlayerInput.Punch) => animations("punch")
-        case _ if in.exists(PlayerInput.movement.contains) => walkTransition(in, state)
+        case _ if in.contains(Punch) => animations("punch")
+        case _ if in.exists(movement.contains) => walkTransition(in, state)
         case _ => animations("idle")
     } else if (state.animation.isFinished) animations("idle")
       else state
 
   // Real janky bc this only fires if a movement key is current pressed down
-  def walkTransition(in: Set[PlayerInput.Action], state: StateAnimation) = state.state match {
+  def walkTransition(in: Set[InputAction], state: StateAnimation) = state.state match {
     case Idle => animations("startwalk")
     case MovementTransition if(state.animation.isFinished) => animations("walking")
     case _ => state
   }
 
-  def computeVelocity(in: Set[PlayerInput.Action], state: StateAnimation) = {
+  def computeVelocity(in: Set[InputAction], state: StateAnimation) = {
     val vel = new Vector2();
 
     if (state.state.moves) {
-      if (in(PlayerInput.MoveRight)) vel.x = walkSpeed
-      if (in(PlayerInput.MoveLeft)) vel.x = -walkSpeed
-      if (in(PlayerInput.MoveUp)) vel.y = walkSpeed
-      if (in(PlayerInput.MoveDown)) vel.y = -walkSpeed
+      if (in(MoveRight)) vel.x = walkSpeed
+      if (in(MoveLeft)) vel.x = -walkSpeed
+      if (in(MoveUp)) vel.y = walkSpeed
+      if (in(MoveDown)) vel.y = -walkSpeed
     }
     vel
   }
