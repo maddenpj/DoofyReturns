@@ -84,6 +84,10 @@ public class AnimatedSprite {
     return animation.isAnimationFinished(elapsedTime);
   }
 
+  public float getElapsedTime() {
+    return elapsedTime;
+  }
+
   public float getDuration() {
     return animation.getAnimationDuration();
   }

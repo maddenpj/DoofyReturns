@@ -23,7 +23,6 @@ object Purpucard {
 }
 
 
-
 // Also gross to pass in level bounds like this
 class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     extends Renderable
@@ -41,29 +40,14 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   val animations = Map(
     "idle"        -> StateAnimation(Idle, new AnimatedSprite( atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG)),
     "walking"     -> StateAnimation(Moving, new AnimatedSprite( atlas, "walking", 0.08f)),
-    "startwalk"   -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", 0.08f, Animation.PlayMode.NORMAL, false)),
-    "startwalk_r" -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", 0.08f, Animation.PlayMode.REVERSED, false)),
+    "startwalk"   -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", 0.08f, Animation.PlayMode.NORMAL, true)),
+    "startwalk_r" -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", 0.08f, Animation.PlayMode.REVERSED, true)),
     "punch"       -> StateAnimation(Punching, new AnimatedSprite( atlas, "punch", 0.08f, Animation.PlayMode.NORMAL, false))
   )
   var activeState: StateAnimation = animations("idle")
+  var lastState = activeState.state
 
-  val a1 = Set(PlayerInput.MoveUp, PlayerInput.MoveRight, PlayerInput.Punch)
-  val a2 = Set(PlayerInput.MoveUp, PlayerInput.MoveRight) 
-  val a3 = Set(PlayerInput.Punch)
-  val a4 = Set[PlayerInput.Action]()
-  Gdx.app.log(s"$a1", "= " + a1.exists(PlayerInput.movement.contains))
-  Gdx.app.log(s"$a2", "= " + a2.exists(PlayerInput.movement.contains))
-  Gdx.app.log(s"$a3", "= " + a3.exists(PlayerInput.movement.contains))
-  Gdx.app.log(s"$a4", "= " + a4.exists(PlayerInput.movement.contains))
-  // val animations = Map(
-    // "idle" -> new AnimatedSprite(atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG),
-    // "walking" -> new AnimatedSprite(atlas, "walking", 0.08f),
-    // "startwalk" -> new AnimatedSprite(atlas, "startwalk", 0.08f, Animation.PlayMode.NORMAL),
-    // "startwalk_r" -> new AnimatedSprite(atlas, "startwalk", 0.08f, Animation.PlayMode.REVERSED),
-    // "punch" -> new AnimatedSprite(atlas, "punch", 0.08f, Animation.PlayMode.NORMAL, false)
-  // )
-
-  // animations("walking").getSprite.setSize(105.0f, 61.0f)
+  // Might cause issues
   animations.values.foreach(_.animation.getSprite.setScale(spriteScale))
 
   val bindings = Map(
@@ -73,13 +57,6 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     PlayerInput.MoveDown  -> Input.Keys.DOWN,
     PlayerInput.Punch -> Input.Keys.SPACE
   )
-
-  def animState(animName: String) = animName match {
-    case "punch" => Purpucard.Punching
-    case "walking" => Purpucard.Moving //TODO - dangerous
-    case _ if animName.contains("startwalk") => Purpucard.MovementTransition
-    case "idle" => Purpucard.Idle
-  }
 
   // update(in: Set[Action], dt: Float)? might be better
   // but breaks Renderable
@@ -92,10 +69,11 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   //
   def update(dt: Float) {
     val in = getInput()
+    lastState = activeState.state
     activeState = stateTransition(in, activeState)
     val vel = computeVelocity(in, activeState) // Don't like the order dependence here
 
-    // Gdx.app.log(s"${activeState.state}", s"${Seq(activeAnimation.getName, activeAnimation.getDuration, activeAnimation.isFinished)}")
+    if (lastState != activeState.state) Gdx.app.log("Purpucard", s"$lastState → ${activeState.state}")
 
     // Collision detection
     if (levelRect.contains(vel.cpy.add(getX, getY))) {
@@ -109,9 +87,6 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   def activeAnimation() = activeState.animation
 
-  def inputAllowed(state: StateAnimation) = state.animation.canInterrupt || state.animation.isFinished
-
-  // TODO: Needs to switch back to idle when punch animation is done
   def stateTransition(in: Set[PlayerInput.Action], state: StateAnimation) =
     if (state.animation.canInterrupt) in match {
         case _ if in.contains(PlayerInput.Punch) => animations("punch")
@@ -120,8 +95,12 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     } else if (state.animation.isFinished) animations("idle")
       else state
 
-
-  def walkTransition(in: Set[PlayerInput.Action], state: StateAnimation) = animations("walking")
+  // Real janky bc this only fires if a movement key is current pressed down
+  def walkTransition(in: Set[PlayerInput.Action], state: StateAnimation) = state.state match {
+    case Idle => animations("startwalk")
+    case MovementTransition if(state.animation.isFinished) => animations("walking")
+    case _ => state
+  }
 
   def computeVelocity(in: Set[PlayerInput.Action], state: StateAnimation) = {
     val vel = new Vector2();
