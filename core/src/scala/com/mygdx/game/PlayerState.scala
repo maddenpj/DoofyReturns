@@ -4,15 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.{Input, InputAdapter}
 
 
-// trait Input {
-  // def bindings: Map[Input.Action, Int]
-  // def getInput() = bindings.filter(x => isKeyPressed(x._2)).keySet 
-  // def getInput(): Set[Action]
-  // def isKeyPressed(k: Int) = Gdx.input.isKeyPressed(k)
-// }
-
-
-
 
 object PlayerState {
 
@@ -43,8 +34,6 @@ object PlayerState {
   //
   // Ultimately chain we need is
   // Key => Action => Animation
-
-
   // getInput()  () => Set[InputAction]
   val bindings = Map(
     Input.Keys.RIGHT -> MoveRight,
@@ -72,6 +61,5 @@ object PlayerState {
     }
   }
 
-  // def defaultInputProcessor() = new InputController(bindings)
   val defaultInputProcessor= new InputController(bindings)
 }
