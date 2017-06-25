@@ -19,14 +19,16 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   val spriteScale = 3.0f;
   var activeAnimationName = "idle"
 
-  // Coupling these together was a shit idea
-  // Prob should be just a Seq()
+  val startFps = 0.06f;
+  val walkFps = 0.08f;
+  val punchFps = 0.08f;
+  // Coupling these together was a shit idea Prob should be just a Seq()
   val animations = Map(
     "idle"        -> StateAnimation(Idle, new AnimatedSprite( atlas, "idle", 0.12f, Animation.PlayMode.LOOP_PINGPONG)),
-    "walking"     -> StateAnimation(Moving, new AnimatedSprite( atlas, "walking", 0.08f)),
-    "startwalk"   -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", 0.08f, Animation.PlayMode.NORMAL, true)),
-    "startwalk_r" -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", 0.08f, Animation.PlayMode.REVERSED, true)),
-    "punch"       -> StateAnimation(Punching, new AnimatedSprite( atlas, "punch", 0.08f, Animation.PlayMode.NORMAL, false))
+    "walking"     -> StateAnimation(Moving, new AnimatedSprite( atlas, "walking", walkFps)),
+    "startwalk"   -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", startFps, Animation.PlayMode.NORMAL, true)),
+    "startwalk_r" -> StateAnimation(MovementTransition, new AnimatedSprite( atlas, "startwalk", startFps, Animation.PlayMode.REVERSED, true)),
+    "punch"       -> StateAnimation(Punching, new AnimatedSprite( atlas, "punch", punchFps, Animation.PlayMode.NORMAL, false))
   )
   var activeState: StateAnimation = animations("idle")
   var lastState = activeState.state
