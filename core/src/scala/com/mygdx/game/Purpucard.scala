@@ -8,12 +8,15 @@ import com.badlogic.gdx.math.{Rectangle, Vector2}
 
 
 
+
 // Also gross to pass in level bounds like this
 class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     extends Renderable
     with HasPosition {
     import PlayerState._
 
+
+  val inputHandler = new InputHandler(new PlayerInputListener(this, PlayerState.bindings))
 
   val walkSpeed = 2.5f;
   val spriteScale = 3.0f;
@@ -31,7 +34,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     "punch"       -> StateAnimation(Punching, new AnimatedSprite( atlas, "punch", punchFps, Animation.PlayMode.NORMAL, false))
   )
   var activeState: StateAnimation = animations("idle")
-  var lastState = activeState.state
+  var lastState = activeState
   // animations("punch").animation.flipFrames(true, false)
 
   // Might cause issues
@@ -47,12 +50,9 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   //  TODO 4AM EDIT: THIS IS A STATE Monad!
   //
   def update(dt: Float) {
-    val in = PlayerState.defaultInputProcessor.getInput()
-    lastState = activeState.state
-    activeState = stateTransition(in, activeState)
-    val vel = computeVelocity(in, activeState) // Don't like the order dependence here
 
-    if (lastState != activeState.state) Gdx.app.log("Purpucard", s"$lastState → ${activeState.state}")
+    // val vel = computeVelocity(in, activeState) // Don't like the order dependence here
+    val vel = new Vector2
 
     // Collision detection
     if (levelRect.contains(vel.cpy.add(getX, getY))) {
@@ -65,6 +65,18 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   }
 
   def activeAnimation() = activeState.animation
+
+  def onStatePressed(action: InputAction) {
+    lastState = activeState
+    activeState = if (activeAnimation.canInterrupt) action match {
+      case Punch => animations("punch")
+      case _ if movement.contains(action) => animations("walking")
+      case _ => animations("idle")
+    } else if (activeAnimation.isFinished) animations("idle")
+      else activeState
+
+    if (lastState.state != activeState.state) Gdx.app.log("Purpucard.onStatePressed", s"${lastState.state} → ${activeState.state}")
+  }
 
   // TODO: Ok so this is all the state machine transistion stuff for the keyDown "event"
   //        need to complete state machine with transistions for keyUp

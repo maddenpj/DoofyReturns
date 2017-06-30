@@ -5,6 +5,7 @@ import com.badlogic.gdx.{Input, InputAdapter}
 
 
 
+
 object PlayerState {
 
   sealed trait InputAction
@@ -37,29 +38,10 @@ object PlayerState {
   // getInput()  () => Set[InputAction]
   val bindings = Map(
     Input.Keys.RIGHT -> MoveRight,
+    Input.Keys.LEFT -> MoveLeft,
     Input.Keys.UP    -> MoveUp,
     Input.Keys.DOWN  -> MoveDown,
     Input.Keys.SPACE -> Punch
   )
 
-  class InputController(keyBinds: Map[Int, InputAction]) extends InputAdapter {
-
-    val keyStates =
-      collection.mutable.Map[InputAction, Boolean]() ++= keyBinds.values.map(_ -> false)
-
-    def getInput() = keyStates.filter(_._2).keys.toSet
-
-
-    override def keyDown(k: Int): Boolean = {
-      if(keyBinds.contains(k)) keyStates(keyBinds(k)) = true
-      true
-    }
-
-    override def keyUp(k: Int): Boolean = {
-      if(keyBinds.contains(k)) keyStates(keyBinds(k)) = false
-      true
-    }
-  }
-
-  val defaultInputProcessor= new InputController(bindings)
 }

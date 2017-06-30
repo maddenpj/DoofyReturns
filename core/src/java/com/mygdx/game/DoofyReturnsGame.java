@@ -44,19 +44,25 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     background = new Texture(Gdx.files.internal("d4background.bmp"));
     levelRect = new Rectangle(0, 0, 2046, 101);
 
-    debug = prefs.getBoolean("debug", false);
-    if (debug) {
-      recorder = new GifRecorder(batch);
-      recorder.setResizeKey(Input.Keys.R);
-      debugRenderer = new ShapeRenderer();
-    }
-
-    Gdx.input.setInputProcessor(PlayerState.defaultInputProcessor());
+    // Gdx.input.setInputProcessor(PlayerState.defaultInputProcessor());
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas, levelRect);
     purp.setPosition(45.0f, 70.0f);
+    Gdx.input.setInputProcessor(purp.inputHandler());
 
+
+
+    debug = prefs.getBoolean("debug", false);
+    if (debug) {
+      float hw = Gdx.graphics.getWidth() / 2;
+      float hh = Gdx.graphics.getHeight() / 2;
+      recorder = new GifRecorder(batch);
+      recorder.setResizeKey(Input.Keys.R);
+      recorder.setBounds(-hw+(hw/2), -hh, 200, 200);
+      recorder.setFPS(24);
+      debugRenderer = new ShapeRenderer();
+    }
   }
 
   public void update () {
@@ -87,7 +93,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
     if(debug) {
       recorder.update();
-      renderDebug();
+      if (prefs.getBoolean("debug.renderRects", false)) renderDebug();
     }
   }
 
