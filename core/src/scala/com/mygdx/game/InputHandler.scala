@@ -1,37 +1,44 @@
 package com.mygdx.game
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.{InputAdapter}
-
-import PlayerState.InputAction
+import com.badlogic.gdx.{Gdx, InputAdapter}
+import com.badlogic.gdx.Input.Keys
 
 
-// Int -> PlayerState.InputAction
-
-trait InputStateListener {
-  def hasState(key: Int): Option[InputAction]
-  def onStatePressed(action: InputAction): Unit
-}
-
-class PlayerInputListener(player: Purpucard, keyBinds: Map[Int, InputAction]) extends InputStateListener {
-  def hasState(key: Int) = keyBinds.get(key)
-
-  def onStatePressed(action: InputAction) {
-    player.onStatePressed(action)
-  }
-}
 
 
-class InputHandler(listener: InputStateListener) extends InputAdapter {
+object PlayerInput {
+  type KeyCode = Int
 
-  override def keyDown(k: Int): Boolean = {
-    listener.hasState(k).map { action =>
-      listener.onStatePressed(action)
+  sealed trait Action
+  case object MoveLeft extends Action
+  case object MoveRight extends Action
+  case object MoveUp extends Action
+  case object MoveDown extends Action
+  case object Punch extends Action
+
+  val movements = Seq(MoveLeft, MoveRight, MoveDown, MoveUp)
+
+  val bindings = Map(
+    Keys.RIGHT -> MoveRight,
+    Keys.LEFT -> MoveLeft,
+    Keys.UP    -> MoveUp,
+    Keys.DOWN  -> MoveDown,
+    Keys.SPACE -> Punch
+  )
+
+
+  class KeyboardAdapter(player: Purpucard, bindings: Map[KeyCode, Action]) extends InputAdapter {
+
+    override def keyDown(k: KeyCode): Boolean = {
+      bindings.get(k).map(player.onStatePressed(_))
+      true
     }
-    true
+
+    override def keyUp(k: KeyCode): Boolean = {
+      true
+    }
   }
 
-  override def keyUp(k: Int): Boolean = {
-    true
-  }
+  def defaultAdapter(player: Purpucard) = new KeyboardAdapter(player, bindings)
+
 }

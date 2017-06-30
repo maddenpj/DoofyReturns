@@ -1,7 +1,6 @@
 package com.mygdx.game
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d._
 import com.badlogic.gdx.math.{Rectangle, Vector2}
 
@@ -13,10 +12,9 @@ import com.badlogic.gdx.math.{Rectangle, Vector2}
 class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     extends Renderable
     with HasPosition {
+    import PlayerInput._
     import PlayerState._
 
-
-  val inputHandler = new InputHandler(new PlayerInputListener(this, PlayerState.bindings))
 
   val walkSpeed = 2.5f;
   val spriteScale = 3.0f;
@@ -66,11 +64,11 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   def activeAnimation() = activeState.animation
 
-  def onStatePressed(action: InputAction) {
+  def onStatePressed(action: Action) {
     lastState = activeState
     activeState = if (activeAnimation.canInterrupt) action match {
       case Punch => animations("punch")
-      case _ if movement.contains(action) => animations("walking")
+      case _ if movements.contains(action) => animations("walking")
       case _ => animations("idle")
     } else if (activeAnimation.isFinished) animations("idle")
       else activeState
@@ -80,22 +78,22 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   // TODO: Ok so this is all the state machine transistion stuff for the keyDown "event"
   //        need to complete state machine with transistions for keyUp
-  def stateTransition(in: Set[InputAction], state: StateAnimation) =
+  def stateTransition(in: Set[Action], state: StateAnimation) =
     if (state.animation.canInterrupt) in match {
         case _ if in.contains(Punch) => animations("punch")
-        case _ if in.exists(movement.contains) => walkTransition(in, state)
+        case _ if in.exists(movements.contains) => walkTransition(in, state)
         case _ => animations("idle")
     } else if (state.animation.isFinished) animations("idle")
       else state
 
   // Real janky bc this only fires if a movement key is current pressed down
-  def walkTransition(in: Set[InputAction], state: StateAnimation) = state.state match {
+  def walkTransition(in: Set[Action], state: StateAnimation) = state.state match {
     case Idle => animations("startwalk")
     case MovementTransition if(state.animation.isFinished) => animations("walking")
     case _ => state
   }
 
-  def computeVelocity(in: Set[InputAction], state: StateAnimation) = {
+  def computeVelocity(in: Set[Action], state: StateAnimation) = {
     val vel = new Vector2();
 
     if (state.state.moves) {
