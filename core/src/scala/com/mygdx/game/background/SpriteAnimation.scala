@@ -3,13 +3,14 @@ package com.mygdx.game.background
 
 import com.badlogic.gdx.Gdx
 
-import com.badlogic.gdx.graphics.g2d.{TextureRegion, Sprite, Animation => GdxAnimation}
-import com.badlogic.gdx.math.{Rectangle, Vector2}
+import com.badlogic.gdx.graphics.g2d.{TextureAtlas, TextureRegion, Sprite, SpriteBatch, Animation => GdxAnimation}
+import com.badlogic.gdx.math.Vector2
 
 
 
 object Animation {
-  type Mode = GdxAnimation.PlayMode
+  import GdxAnimation.PlayMode
+  type Mode = PlayMode
 
   // Other things
   // Interruptible or not
@@ -21,20 +22,15 @@ object Animation {
   }
   case object Stopped extends State
   case object Playing extends State
-  case object Finished extends State
 
-
-
-  trait Properties {
-    def interruptible: Boolean
-    def mode: Mode
-    def fps: Float
-  }
 
   trait SpriteAnimation {
     def sprite: Sprite
     def anim: GdxAnimation[TextureRegion]
-    def props: Properties
+    def mode: Mode
+    def interruptible: Boolean
+    def isFinished: Boolean // Should be Option too
+    def duration: Option[Float]
 
     private var _state: State = Stopped
     def state = _state
@@ -42,14 +38,13 @@ object Animation {
     private var _elapsed: Float = _
     def elapsed = _elapsed
 
-    def duration = anim.getAnimationDuration
-
     def position = new Vector2(sprite.getX, sprite.getY)
     def x = sprite.getX
     def y = sprite.getY
 
     def setPosition(x: Float, y: Float) = sprite.setPosition(x,y)
 
+    // should be update and inherit Renderable
     def play(dt: Float) {
       if (state == Stopped) {
         _elapsed = 0.0f
@@ -62,9 +57,48 @@ object Animation {
       _state = Stopped
     }
 
-    def isFinished = anim.isAnimationFinished(elapsed)
+    def render(s: SpriteBatch) {
+      sprite.setRegion(anim.getKeyFrame(elapsed))
+      sprite.draw(s)
+    }
 
+    // Note gdx will return true for looping animations after they've run a whole cycle
+    // def isFinished = anim.isAnimationFinished(elapsed)
   }
+
+  // TODO: Maybe some sort of assert that mode is (LOOP || LOOP_PINGPONG)
+  class LoopingAnimation(
+    val sprite: Sprite,
+    val anim: GdxAnimation[TextureRegion],
+    val mode: Mode) extends SpriteAnimation {
+      val interruptible = false
+      val isFinished = false
+      val duration = None
+  }
+
+  class NormalAnimation(
+    val sprite: Sprite,
+    val anim: GdxAnimation[TextureRegion],
+    val mode: Mode,
+    val interruptible: Boolean) extends SpriteAnimation {
+      
+      def duration = Some(anim.getAnimationDuration)
+      def isFinished = anim.isAnimationFinished(elapsed)
+  }
+
+
+  def normal(atlas: TextureAtlas, atlasKey: String, fps: Float, mode: Mode = PlayMode.NORMAL, interruptible: Boolean = true) = {
+    val anim = atlasToAnim(atlas, atlasKey, fps, mode)
+    new NormalAnimation(atlas.createSprite(atlasKey), anim, mode, interruptible)
+  }
+
+  def looping(atlas: TextureAtlas, atlasKey: String, fps: Float, mode: Mode = PlayMode.LOOP) = {
+    val anim = atlasToAnim(atlas, atlasKey, fps, mode)
+    new LoopingAnimation(atlas.createSprite(atlasKey), anim, mode)
+  }
+
+  def atlasToAnim(atlas: TextureAtlas, key: String, fps: Float, mode: Mode) =
+    new GdxAnimation[TextureRegion](fps, atlas.findRegions(key), mode)
 
 
 }
