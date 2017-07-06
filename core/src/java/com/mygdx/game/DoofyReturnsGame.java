@@ -33,6 +33,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
   boolean debug;
   GifRecorder recorder;
+  TestPlayer tp;
 
   @Override
   public void create () {
@@ -51,7 +52,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     purp.setPosition(45.0f, 70.0f);
     Gdx.input.setInputProcessor(PlayerInput.defaultAdapter(purp));
 
-
+    tp = new TestPlayer(atlas);
 
     debug = prefs.getBoolean("debug", false);
     if (debug) {
@@ -69,12 +70,14 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
     float dt = Gdx.graphics.getDeltaTime();
-    purp.update(dt);
+    // purp.update(dt);
     float halfWidth = Gdx.graphics.getWidth() / 2.0f;
     if (purp.getX() > halfWidth) {
       camera.position.x = purp.getX();
     }
     camera.update();
+
+    tp.update(dt);
   }
 
   @Override
@@ -87,7 +90,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     batch.begin();
 
     batch.draw(background, 0.0f, 0.0f); 
-    purp.draw(batch);
+    // purp.draw(batch);
+    tp.draw(batch);
 
     batch.end();
 
