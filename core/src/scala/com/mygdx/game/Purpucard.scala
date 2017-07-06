@@ -93,11 +93,11 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     val vel = new Vector2
 
     // Collision detection
-    if (levelRect.contains(vel.cpy.add(getX, getY))) {
-      incrPosition(vel.nor.scl(walkSpeed))
+    if (levelRect.contains(vel.cpy.add(position))) {
+      _position.add(vel.nor.scl(walkSpeed))
     }
 
-    animations.values.foreach(_.animation.setPosition(posX, posY))
+    animations.values.foreach(_.animation.setPosition(position.x, position.y))
     activeState.animation.playAnimation(dt)
     animations.values.filterNot(_ == activeState).foreach(_.animation.stop)
   }
@@ -154,5 +154,5 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   def getWidth() = activeAnimation.getSprite.getWidth
   def getHeight() = activeAnimation.getSprite.getHeight
-  def getRect() = new Rectangle(getX, getY, getWidth, getHeight)
+  def getRect() = new Rectangle(position.x, position.y, getWidth, getHeight)
 }

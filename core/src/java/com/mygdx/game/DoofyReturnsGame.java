@@ -72,8 +72,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     float dt = Gdx.graphics.getDeltaTime();
     purp.update(dt);
     float halfWidth = Gdx.graphics.getWidth() / 2.0f;
-    if (purp.getX() > halfWidth) {
-      camera.position.x = purp.getX();
+    if (purp.position().x > halfWidth) {
+      camera.position.x = purp.position().x;
     }
     camera.update();
 

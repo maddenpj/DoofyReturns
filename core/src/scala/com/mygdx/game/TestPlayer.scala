@@ -16,9 +16,10 @@ class TestPlayer(atlas: TextureAtlas)
 
   val idle = Animation.looping(atlas, "idle", 0.12f, PlayMode.LOOP_PINGPONG)
   idle.sprite.setScale(3.0f)
-  idle.setPosition(400,100)
+  setPosition(400,100)
 
   def update(dt: Float) {
+    idle.setPosition(position)
     idle.play(dt)
   }
 

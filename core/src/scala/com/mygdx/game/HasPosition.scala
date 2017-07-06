@@ -2,27 +2,14 @@ package com.mygdx.game
 
 import com.badlogic.gdx.math.Vector2
 
- //So disgusting.. Mutable :(
 trait HasPosition {
-  var posX: Float = 0.0f
-  var posY: Float = 0.0f
+  // Hmmmm does this make sense?
+  // could it just be public
+  protected val _position = new Vector2
 
-  def setPosition(x: Float, y: Float) {
-    posX = x
-    posY = y
-  }
+  def setPosition(x: Float, y: Float) = _position.set(x, y)
+  def setPosition(v: Vector2) = _position.set(v)
 
-  def incrPosition(vel: Vector2) {
-    posX += vel.x
-    posY += vel.y
-  }
-
-  def incrPosition(dx: Float = 0.0f, dy: Float = 0.0f) {
-    posX += dx
-    posY += dy
-  }
-
-  def getX() = posX
-  def getY() = posY
+  def position = _position.cpy
 
 }
