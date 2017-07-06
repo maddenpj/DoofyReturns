@@ -70,7 +70,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
     float dt = Gdx.graphics.getDeltaTime();
-    // purp.update(dt);
+    purp.update(dt);
     float halfWidth = Gdx.graphics.getWidth() / 2.0f;
     if (purp.getX() > halfWidth) {
       camera.position.x = purp.getX();
@@ -90,7 +90,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     batch.begin();
 
     batch.draw(background, 0.0f, 0.0f); 
-    // purp.draw(batch);
+    purp.draw(batch);
     tp.draw(batch);
 
     batch.end();
