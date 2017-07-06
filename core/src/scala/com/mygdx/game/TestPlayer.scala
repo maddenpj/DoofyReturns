@@ -13,6 +13,10 @@ class TestPlayer(atlas: TextureAtlas)
   with HasPosition {
 
  
+  // TODO:
+  // So I'm leaning towards an intermediary between Player and his collection of animations
+  // The only "states" relevant to Player at his level should be actual gameplay related ones
+  // And his AnimationManager or w/e manages the states of his animations and their transisitions
 
   val idle = Animation.looping(atlas, "idle", 0.12f, PlayMode.LOOP_PINGPONG)
   idle.sprite.setScale(3.0f)
