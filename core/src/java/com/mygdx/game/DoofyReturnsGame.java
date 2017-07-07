@@ -33,6 +33,7 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
   boolean debug;
   GifRecorder recorder;
+  TestPlayer tp;
 
   @Override
   public void create () {
@@ -44,19 +45,25 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     background = new Texture(Gdx.files.internal("d4background.bmp"));
     levelRect = new Rectangle(0, 0, 2046, 101);
 
-    debug = prefs.getBoolean("debug", false);
-    if (debug) {
-      recorder = new GifRecorder(batch);
-      recorder.setResizeKey(Input.Keys.R);
-      debugRenderer = new ShapeRenderer();
-    }
-
-    Gdx.input.setInputProcessor(PlayerState.defaultInputProcessor());
+    // Gdx.input.setInputProcessor(PlayerState.defaultInputProcessor());
 
     TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("pack/alucard.atlas"));
     purp = new Purpucard(atlas, levelRect);
     purp.setPosition(45.0f, 70.0f);
+    Gdx.input.setInputProcessor(PlayerInput.defaultAdapter(purp));
 
+    tp = new TestPlayer(atlas);
+
+    debug = prefs.getBoolean("debug", false);
+    if (debug) {
+      float hw = Gdx.graphics.getWidth() / 2;
+      float hh = Gdx.graphics.getHeight() / 2;
+      recorder = new GifRecorder(batch);
+      recorder.setResizeKey(Input.Keys.R);
+      recorder.setBounds(-hw+(hw/2), -hh, 200, 200);
+      recorder.setFPS(24);
+      debugRenderer = new ShapeRenderer();
+    }
   }
 
   public void update () {
@@ -65,10 +72,12 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     float dt = Gdx.graphics.getDeltaTime();
     purp.update(dt);
     float halfWidth = Gdx.graphics.getWidth() / 2.0f;
-    if (purp.getX() > halfWidth) {
-      camera.position.x = purp.getX();
+    if (purp.position().x > halfWidth) {
+      camera.position.x = purp.position().x;
     }
     camera.update();
+
+    tp.update(dt);
   }
 
   @Override
@@ -82,12 +91,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
     batch.draw(background, 0.0f, 0.0f); 
     purp.draw(batch);
+    tp.draw(batch);
 
     batch.end();
 
     if(debug) {
       recorder.update();
-      renderDebug();
+      if (prefs.getBoolean("debug.renderRects", false)) renderDebug();
     }
   }
 

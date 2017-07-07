@@ -1,17 +1,58 @@
 package com.mygdx.game
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d._
 import com.badlogic.gdx.math.{Rectangle, Vector2}
 
 
 
 
+// object Purpucard {
+
+  // import com.badlogic.gdx.Input.Keys
+
+
+  // sealed trait Action
+  // case object Idle extends Action
+  // case object Punching extends Action
+  // case object Moving extends Action
+  // case object Dead extends Action
+
+  // trait AnimationState
+  // case object Playing extends AnimationState
+  // case object Finished extends AnimationState
+
+  // trait InputEvent
+  // case object MoveRight extends InputEvent
+  // case object Punch extends InputEvent
+
+  // trait PurpucardState {
+    // def action: Action
+    // def animation: AnimationState
+
+    // def onKeyPressed(i: InputEvent): PurpucardState
+    // def onKeyReleased(i: InputEvent): PurpucardState
+  // }
+
+  // case class PurpucardState(action: Action, animation: AnimationState) {
+    // def onKeyPressed(i: InputEvent): PurpucardState = ???
+    // def onKeyReleased(i: InputEvent): PurpucardState = ???
+  // }
+
+
+  // // trait KeyReleasedEvent
+  // // case object MoveRight extends KeyReleasedEvent
+  // // case object Punch extends KeyReleasedEvent
+
+
+// }
+
+
 // Also gross to pass in level bounds like this
 class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     extends Renderable
     with HasPosition {
+    import PlayerInput._
     import PlayerState._
 
 
@@ -31,7 +72,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     "punch"       -> StateAnimation(Punching, new AnimatedSprite( atlas, "punch", punchFps, Animation.PlayMode.NORMAL, false))
   )
   var activeState: StateAnimation = animations("idle")
-  var lastState = activeState.state
+  var lastState = activeState
   // animations("punch").animation.flipFrames(true, false)
 
   // Might cause issues
@@ -47,43 +88,57 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   //  TODO 4AM EDIT: THIS IS A STATE Monad!
   //
   def update(dt: Float) {
-    val in = PlayerState.defaultInputProcessor.getInput()
-    lastState = activeState.state
-    activeState = stateTransition(in, activeState)
-    val vel = computeVelocity(in, activeState) // Don't like the order dependence here
 
-    if (lastState != activeState.state) Gdx.app.log("Purpucard", s"$lastState → ${activeState.state}")
+    // val vel = computeVelocity(in, activeState) // Don't like the order dependence here
+    val vel = new Vector2
 
     // Collision detection
-    if (levelRect.contains(vel.cpy.add(getX, getY))) {
-      incrPosition(vel.nor.scl(walkSpeed))
+    if (levelRect.contains(vel.cpy.add(position))) {
+      _position.add(vel.nor.scl(walkSpeed))
     }
 
-    animations.values.foreach(_.animation.setPosition(posX, posY))
+    animations.values.foreach(_.animation.setPosition(position.x, position.y))
     activeState.animation.playAnimation(dt)
     animations.values.filterNot(_ == activeState).foreach(_.animation.stop)
   }
 
   def activeAnimation() = activeState.animation
 
-  // TODO: Ok so this is all the state machine transistion stuff for the keyDown "event"
-  //        need to complete state machine with transistions for keyUp
-  def stateTransition(in: Set[InputAction], state: StateAnimation) =
-    if (state.animation.canInterrupt) in match {
-        case _ if in.contains(Punch) => animations("punch")
-        case _ if in.exists(movement.contains) => walkTransition(in, state)
-        case _ => animations("idle")
-    } else if (state.animation.isFinished) animations("idle")
-      else state
+  def onStatePressed(action: Action) {
+    lastState = activeState
+    activeState = if (activeAnimation.canInterrupt) action match {
+      case Punch => animations("punch")
+      case _ if movements.contains(action) => animations("walking")
+      case _ => animations("idle")
+    } else if (activeAnimation.isFinished) animations("idle")
+      else activeState
 
-  // Real janky bc this only fires if a movement key is current pressed down
-  def walkTransition(in: Set[InputAction], state: StateAnimation) = state.state match {
-    case Idle => animations("startwalk")
-    case MovementTransition if(state.animation.isFinished) => animations("walking")
-    case _ => state
+    if (lastState.state != activeState.state) Gdx.app.log("Purpucard.onStatePressed", s"${lastState.state} → ${activeState.state}")
   }
 
-  def computeVelocity(in: Set[InputAction], state: StateAnimation) = {
+  // def idealStatePressed(a: Action) {
+    // (a, activeState.state) match {
+      // case (_, Idle) => actAccordingly(a)
+      // case (AnyMove, Idle) => startWalk()
+      // case (AnyMove, AnyMove or MovementTransition) => if (MovementTransition.animation.isFinished) walking() else continueCurrentAnim
+      // case _ => idle
+    // }
+  // }
+
+  // def idealStateReleased(a: Action) {
+    // (a, activeState.state) match {
+
+    // }
+  // }
+
+  // Real janky bc this only fires if a movement key is current pressed down
+  // def walkTransition(lastState: ) = lastState match {
+    // case Idle => animations("startwalk")
+    // case MovementTransition if(state.animation.isFinished) => animations("walking")
+    // case _ => state
+  // }
+
+  def computeVelocity(in: Set[Action], state: StateAnimation) = {
     val vel = new Vector2();
 
     if (state.state.moves) {
@@ -99,5 +154,5 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
 
   def getWidth() = activeAnimation.getSprite.getWidth
   def getHeight() = activeAnimation.getSprite.getHeight
-  def getRect() = new Rectangle(getX, getY, getWidth, getHeight)
+  def getRect() = new Rectangle(position.x, position.y, getWidth, getHeight)
 }
