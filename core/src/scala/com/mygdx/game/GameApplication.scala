@@ -3,7 +3,7 @@ package com.mygdx.game
 import com.badlogic.gdx.{Gdx, Game}
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
-// import com.mygdx.game.screen.DoofyReturnsScreen
+import com.mygdx.game.screen.DoofyReturnsScreen
 
 
 class GameApplication extends Game {
@@ -18,7 +18,7 @@ class GameApplication extends Game {
     _batch = new SpriteBatch
 
     screen match {
-      case "DoofyReturnsScreen" => setScreen(new DoofyReturnsGame(this))
+      case "DoofyReturnsScreen" => setScreen(new DoofyReturnsScreen(this))
     }
 
   }

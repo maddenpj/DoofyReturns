@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
@@ -19,8 +19,10 @@ import com.badlogic.gdx.Preferences;
 // import com.mygdx.game.background.*;
 import io.anuke.gif.GifRecorder;
 
+import com.mygdx.game.*;
 
-public class DoofyReturnsGame extends ScreenAdapter {
+
+public class DoofyReturnsScreen extends ScreenAdapter {
   GameApplication game;
 
   Preferences prefs;
@@ -37,7 +39,7 @@ public class DoofyReturnsGame extends ScreenAdapter {
   TestPlayer tp;
 
 
-  public DoofyReturnsGame(GameApplication game) {
+  public DoofyReturnsScreen(GameApplication game) {
     this.game = game;
     this.batch = game.batch();
 
