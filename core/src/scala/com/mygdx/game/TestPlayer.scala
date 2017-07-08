@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.{TextureAtlas, SpriteBatch}
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
 
-import com.mygdx.game.background.Animation
+import com.mygdx.game.animation.Animation
 
 
 

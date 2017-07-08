@@ -1,4 +1,4 @@
-package com.mygdx.game.background
+package com.mygdx.game.animation
 
 
 import com.badlogic.gdx.Gdx
