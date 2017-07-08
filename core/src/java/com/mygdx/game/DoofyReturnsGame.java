@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,7 +20,8 @@ import com.badlogic.gdx.Preferences;
 import io.anuke.gif.GifRecorder;
 
 
-public class DoofyReturnsGame extends ApplicationAdapter {
+public class DoofyReturnsGame extends ScreenAdapter {
+  GameApplication game;
 
   Preferences prefs;
   SpriteBatch batch;
@@ -35,11 +36,13 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   GifRecorder recorder;
   TestPlayer tp;
 
-  @Override
-  public void create () {
+
+  public DoofyReturnsGame(GameApplication game) {
+    this.game = game;
+    this.batch = game.batch();
+
     prefs = Gdx.app.getPreferences("com.pensi.doofy");
 
-    batch = new SpriteBatch();
     camera.setToOrtho(false);
     camera.update();
     background = new Texture(Gdx.files.internal("d4background.bmp"));
@@ -66,10 +69,10 @@ public class DoofyReturnsGame extends ApplicationAdapter {
     }
   }
 
-  public void update () {
+  public void update (float dt) {
     if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
-    float dt = Gdx.graphics.getDeltaTime();
+    // float dt = Gdx.graphics.getDeltaTime();
     purp.update(dt);
     float halfWidth = Gdx.graphics.getWidth() / 2.0f;
     if (purp.position().x > halfWidth) {
@@ -81,8 +84,8 @@ public class DoofyReturnsGame extends ApplicationAdapter {
   }
 
   @Override
-  public void render () {
-    this.update();
+  public void render (float dt) {
+    this.update(dt);
     Gdx.gl.glClearColor(0.0f, 0.0f,0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -114,7 +117,6 @@ public class DoofyReturnsGame extends ApplicationAdapter {
 
   @Override
   public void dispose () {
-    batch.dispose();
     prefs.flush();
   }
 
