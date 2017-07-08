@@ -120,6 +120,8 @@ public class DoofyReturnsScreen extends ScreenAdapter {
   @Override
   public void dispose () {
     prefs.flush();
+    // Apparently you're supposed to be calling dispose() on *all* the textures you load
+    background.dispose();
   }
 
   // private void isPlayerOneReady() {
