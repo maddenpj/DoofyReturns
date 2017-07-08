@@ -4,7 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.DoofyReturnsGame;
+import com.mygdx.game.GameApplication;
 
 
 public class DesktopLauncher {
@@ -15,6 +15,6 @@ public class DesktopLauncher {
     // TexturePacker.process("../raw/doom", "pack", "dguy");
     // TexturePacker.process("../raw/warrior", "pack", "warrior");
     // TexturePacker.process("../raw/purpucard", "pack", "alucard");
-    LwjglApplication app = new LwjglApplication(new DoofyReturnsGame(), config);
+    LwjglApplication app = new LwjglApplication(new GameApplication(), config);
   }
 }
