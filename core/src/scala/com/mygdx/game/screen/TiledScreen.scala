@@ -10,42 +10,38 @@ import com.mygdx.game.GameApplication
 
 class TiledScreen(game: GameApplication) extends ScreenAdapter{
 
-    var map : TiledMap = _;
-	var renderer : OrthogonalTiledMapRenderer = _;
+    var map : TiledMap = new TmxMapLoader().load(level);
+  var renderer : OrthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1f / 32f);
 
-    val camera = new OrthographicCamera;
-	val font = new BitmapFont;
-	val batch = new SpriteBatch;
-    
-		val w = Gdx.graphics.getWidth();
-		val h = Gdx.graphics.getHeight();
-		Gdx.app.log("width,height:",w.toString + " " + h.toString)
+  val level = "levels/level1.tmx";
+  val camera = new OrthographicCamera;
+  val font = new BitmapFont;
 
-		camera.setToOrtho(false, (w / h) * 10, 10);
-		camera.update();
 
-		//cameraController = new OrthoCamController(camera);
-		//Gdx.input.setInputProcessor(cameraController);
+  //Using previously created spritebatch
 
-        val level = "levels/level1.tmx";
-		map = new TmxMapLoader().load(level);
+  val batch = game.batch;
 
-		renderer = new OrthogonalTiledMapRenderer(map, 1f / 32f);
+  val w = Gdx.graphics.getWidth();
+  val h = Gdx.graphics.getHeight();
+  Gdx.app.log("width,height:",w.toString + " " + h.toString)
 
-	override def render (dt: Float) {
-		Gdx.gl.glClearColor(0.55f, 0.55f, 0.55f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		camera.update();
-		renderer.setView(camera);
-		renderer.render();
-		batch.begin();
-		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
-		batch.end();
-	}
+  camera.setToOrtho(false, (w / h) * 10, 10);
+  camera.update();
 
-	override def dispose () {
-		map.dispose();
-	}
+  override def render (dt: Float) {
+    Gdx.gl.glClearColor(0.55f, 0.55f, 0.55f, 1f);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    camera.update();
+    renderer.setView(camera);
+    renderer.render();
+    batch.begin();
+    font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+    batch.end();
+  }
 
-} 
-	
+  override def dispose () {
+    map.dispose();
+  }
+
+}
