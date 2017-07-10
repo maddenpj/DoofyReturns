@@ -64,6 +64,7 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
   def activeAnimation() = activeState.animation
 
   def onStatePressed(action: Action) {
+
     lastState = activeState
     activeState = if (activeAnimation.canInterrupt) action match {
       case Punch => animations("punch")
@@ -72,7 +73,15 @@ class Purpucard(atlas: TextureAtlas, levelRect: Rectangle)
     } else if (activeAnimation.isFinished) animations("idle")
       else activeState
 
+    //Gdx.app.log("action", s"${action}, ${activeState}")
+
     if (lastState.state != activeState.state) Gdx.app.log("Purpucard.onStatePressed", s"${lastState.state} → ${activeState.state}")
+  }
+
+  def onStateReleased(action: Action) {
+    lastState = activeState
+    activeState = animations("idle")
+    //Gdx.app.log("action released", s"${action}, ${activeState}")
   }
 
   // def idealStatePressed(a: Action) {
