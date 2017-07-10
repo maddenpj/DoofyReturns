@@ -47,12 +47,16 @@ class TiledScreen(game: GameApplication) extends ScreenAdapter{
 
   def update(dt: Float) {
 
+    if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
+      Gdx.app.exit
+
     purp.update(dt);
     tp.update(dt);
     
   }
 
   override def render (dt: Float) {
+    update(dt);
     Gdx.gl.glClearColor(0.55f, 0.55f, 0.55f, 1f);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     camera.update();
