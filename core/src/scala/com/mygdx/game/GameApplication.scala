@@ -23,6 +23,7 @@ class GameApplication extends Game {
     screen match {
       case "DoofyReturnsScreen" => setScreen(new DoofyReturnsScreen(this))
       case "TestScreen" => setScreen(new TestScreen(this))
+      case "TiledScreen" => setScreen(new TiledScreen(this))
     }
 
   }
