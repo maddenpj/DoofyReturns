@@ -22,6 +22,7 @@ class GameApplication extends Game {
     // This is *bad* design but very convenient for dev
     screen match {
       case "DoofyReturnsScreen" => setScreen(new DoofyReturnsScreen(this))
+      case "STGScreen" => setScreen(new STGScreen(this))
       case "TestScreen" => setScreen(new TestScreen(this))
       case "TiledScreen" => setScreen(new TiledScreen(this))
     }
