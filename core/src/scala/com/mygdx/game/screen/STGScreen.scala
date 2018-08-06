@@ -13,8 +13,9 @@ import com.mygdx.game.GameApplication
 
 class STGControlAdapter extends ControllerAdapter {
   override def buttonDown(c: Controller, btnIndex: Int) = {
-    Gdx.app.log("STGControlAdapter", s"ButtonDown: $btnIndex")
-    if (btnIndex == Xbox.A) Gdx.app.log("STGControlAdapter", "FIRE")
+    // Gdx.app.log("STGControlAdapter", s"ButtonDown: $btnIndex")
+    if (btnIndex == Xbox.A) Gdx.app.log("InputDown", "FIRE")
+    if (btnIndex == Xbox.B) Gdx.app.log("InputDown", "BOMB")
     false
   }
 }
@@ -24,8 +25,8 @@ class STGScreen(game: GameApplication) extends ScreenAdapter {
   val background = new Texture(Gdx.files.internal("hiro.png"))
 
   // Controllers.getControllers().asScala.foreach(println)
-  val pad = Controllers.getControllers().asScala.head
-  pad.addListener(new STGControlAdapter)
+  val pad = Controllers.getControllers().asScala.headOption
+    .foreach(_.addListener(new STGControlAdapter))
 
 
   def update(dt: Float) {
