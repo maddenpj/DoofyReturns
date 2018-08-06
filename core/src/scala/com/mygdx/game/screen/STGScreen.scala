@@ -5,6 +5,7 @@ import scala.collection.JavaConverters._
 import com.badlogic.gdx.{Gdx, ScreenAdapter, Input}
 import com.badlogic.gdx.graphics.{OrthographicCamera, GL20, Texture}
 import com.badlogic.gdx.controllers._
+import com.badlogic.gdx.controllers.mappings.Xbox
 // import com.badlogic.gdx.graphics.g2d._
 
 import com.mygdx.game.GameApplication
@@ -12,7 +13,8 @@ import com.mygdx.game.GameApplication
 
 class STGControlAdapter extends ControllerAdapter {
   override def buttonDown(c: Controller, btnIndex: Int) = {
-    Gdx.app.log(s"Controller: ${c.getName}", s"ButtonDown: $btnIndex")
+    Gdx.app.log("STGControlAdapter", s"ButtonDown: $btnIndex")
+    if (btnIndex == Xbox.A) Gdx.app.log("STGControlAdapter", "FIRE")
     false
   }
 }
