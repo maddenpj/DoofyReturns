@@ -22,7 +22,7 @@ class STGControlAdapter extends ControllerAdapter {
 
 class STGScreen(game: GameApplication) extends ScreenAdapter {
 
-  val background = new Texture(Gdx.files.internal("hiro.png"))
+  val background = new Texture(Gdx.files.internal("Arcade - Darius - Silver Hawk.png"))
 
   // Controllers.getControllers().asScala.foreach(println)
   val pad = Controllers.getControllers().asScala.headOption
